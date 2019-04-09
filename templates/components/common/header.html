@@ -1,0 +1,69 @@
+{{#if customer}}
+<div class="bl_banner">
+    <p><strong>Thanks for being a loyal customer!</strong> <br class="bl-break" />Enjoy Free Standard Shipping on orders $50+</p>
+</div>
+{{/if}}
+
+{{#unless customer}}
+<div class="bl_banner">
+    <p><strong>Returning Customers</strong>&nbsp; <a href="/login.php">Sign in</a> and get<br class="bl-break" /> FREE Standard Shipping on orders $50+ </p>
+</div>
+{{/unless}}
+
+
+{{#if banners.top}}
+<!--<div class="banners" data-banner-location="top">
+    {{#each (limit banners.top_metadata 1)}}
+    <div class="banner" data-event-type="promotion" data-entity-id="{{this.id}}" data-name="{{this.banner-name}}" data-position="{{this.location}}" data-banner-id="{{this.banner-name}}">
+        <div data-event-type="promotion-click">
+            {{{this.content}}}
+        </div>
+    </div>
+    {{/each}}
+</div>-->
+{{/if}}
+<header class="header" role="banner">
+    <a href="#" class="mobileMenu-toggle" data-mobile-menu-toggle="menu">
+        <span class="mobileMenu-toggleIcon">Toggle menu</span>
+    </a>
+    {{> components/common/navigation}}
+
+    {{#if page_type '===' 'default'}}
+        <h1 class="header-logo header-logo--{{theme_settings.logo-position}}">
+            {{> components/common/store-logo}}
+        </h1>
+    {{else}}
+        <div class="header-logo header-logo--{{theme_settings.logo-position}}">
+            {{> components/common/store-logo}}
+        </div>
+    {{/if}}
+    {{{region name="header_bottom"}}}
+
+    <!--dev for header -->
+    <div class="bl_hdr_container">
+        <div class="row">
+            <div class="col-sm-4 col-md-3 bl_main_logo_container"><a href="/"><img src="{{cdn 'img/so-logo.png'}}" class="bl_main_logo"></a></div>
+            <div class="col-sm-8 col-md-9">
+                <!--begin search BL -->
+                {{{ snippet "forms_search"}}}
+                <form class="form"  action="{{urls.search}}">
+                    <fieldset class="form-fieldset">
+                        <div class="form-field">
+                            <label class="form-label is-srOnly" for="search_query_adv">{{lang 'search.results.form_label'}}</label>
+                            <div class="form-prefixPostfix">
+                                <input class="form-input bl_searchfield" id="search_query_adv" name="search_query_adv" placeholder="Search Cartridge/Printer Model" value="{{forms.search.query}}">
+                                <button type="submit" class="bl_search_submit">
+                                    <i class="fas fa-search fa-lg"></i>
+                                </button>
+                    </fieldset>
+                </form>
+                <!-- / Search BL -->
+            </div>
+        </div>
+    </div>
+    <!-- /dev for header-->
+
+    <div class="navPages-container" id="menu" data-menu>
+        {{> components/common/navigation-menu}}
+    </div>
+</header>

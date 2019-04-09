@@ -1,0 +1,40 @@
+// =============================================================================
+// BUTTONS (CSS)
+// =============================================================================
+
+.button {
+    line-height: 1rem;
+     padding: 1.4375rem 2.125rem 1.375rem;
+        font-size: .8125rem;
+        font-weight: 500;
+        line-height: 1.154;
+        letter-spacing: .125rem;
+        text-transform: uppercase;
+        text-align: center;
+        box-shadow: 0 0 0 1px transparent inset;
+        transition: all .2s cubic-bezier(.25,.46,.45,.94);
+        border-radius: 0px !important;
+
+
+    + .button {
+        margin-left: 0;
+
+        @include breakpoint("medium") {
+            margin-left: spacing("half");
+        }
+    }
+}
+
+
+
+
+.button[disabled] {
+    cursor: not-allowed;
+}
+
+.button--icon {
+
+    svg {
+        fill: stencilColor("button--icon-svg-color");
+    }
+}
