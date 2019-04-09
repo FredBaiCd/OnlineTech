@@ -1,0 +1,43 @@
+---
+product_results:
+    limit: {{theme_settings.searchpage_products_per_page}}
+---
+{{inject 'categoryTree' forms.search.category_options}}
+{{inject 'searchProductsPerPage' theme_settings.searchpage_products_per_page}}
+{{#partial "head"}}
+    {{#if pagination.product_results.previous}}
+        <link rel="prev" href="{{pagination.product_results.previous}}">
+    {{/if}}
+    {{#if pagination.product_results.next}}
+        <link rel="next" href="{{pagination.product_results.next}}">
+    {{/if}}
+{{/partial}}
+
+{{#partial "page"}}
+{{!> components/common/breadcrumbs breadcrumbs=breadcrumbs}}
+{{{snippet 'search'}}}
+<div class="page b2b-search-page">
+    <!-- search results title -->
+    <div class="b2b-search-title"><span id="b2b_search_result_count"></span></div>
+
+    <!-- filter here -->
+    <aside class="page-sidebar-b2b" id="faceted-search-container-b2b">
+        <div class="page-sidebar-inner" id="product-filters-container">
+
+
+        </div>
+    </aside>
+
+    <!-- products listing -->
+    <section class="page-content">
+        <div id="b2b_search_result">
+            <ul class="productGrid">
+                <li></li>
+            </ul>
+            <ul class="pagination-list" id="jqPagination"></ul>
+        </div>
+    </scetion>
+</div>
+
+{{/partial}}
+{{> layout/base}}

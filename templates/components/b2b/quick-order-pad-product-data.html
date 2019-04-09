@@ -1,0 +1,9 @@
+<div 
+    data-product-title="{{product.title}}"
+    data-product-price="{{product.price.without_tax.formatted}}{{product.price.with_tax.formatted}}"
+    data-product-priceValue="{{product.price.without_tax.value}}{{product.price.with_tax.value}}"
+    data-product-url="{{product.url}}"
+    {{#if product.options}}has-options="true"{{/if}}
+    data-product-options="{{JSONstringify product.options}}"
+    {{#if product.options}}has-options="true"{{/if}}
+></div>

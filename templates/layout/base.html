@@ -28,6 +28,15 @@
         {{inject 'secureBaseUrl' settings.secure_base_url}}
         {{inject 'cartId' cart_id}}
         {{inject 'template' template}}
+
+        <!-- b2b inject start-->
+        {{inject "page_templete" template}}
+        {{inject "customer" customer}}
+        {{inject "cartData" cart.items}}
+        {{inject "b2bSettings" settings}}
+        <!-- b2b inject end-->
+
+
         {{{snippet 'htmlhead'}}}
     </head>
     <body>
