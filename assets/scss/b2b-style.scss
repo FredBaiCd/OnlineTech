@@ -9,7 +9,8 @@ $b2bBorderColor: #a0a0a0;
     width: auto;
     height: auto;
     font-size: $buttonSize-default-fontSize;
-    padding: $buttonSize-default-verticalPadding $buttonSize-default-horizontalPadding;
+    //padding: $buttonSize-default-verticalPadding $buttonSize-default-horizontalPadding;
+    padding: 1.3rem 2.125rem 1.3rem
 }
 
 .account--fixed  {
@@ -94,9 +95,11 @@ $b2bBorderColor: #a0a0a0;
 
 	}
 	.button--small {
-		font-size: 14px;
-		height: 30px;
-		padding: 7px 10px; //(30 - 14 - 2)/2 = 7
+		//font-size: 14px;
+		//height: 30px;
+		//padding: 7px 10px; //(30 - 14 - 2)/2 = 7
+		padding: 7px 5px;
+		line-height: 1;
 
 
 		&.square {
@@ -334,6 +337,8 @@ $b2bBorderColor: #a0a0a0;
 
 
 		.button--search {
+			padding-top: 12px;
+			padding-bottom: 12px;
 			padding-left: 0;
 			padding-right: 0;
 			height: 42px;
@@ -1882,8 +1887,7 @@ section.quickSearchResults {
 					margin-bottom: 0;
 					font-weight: 700;
 					height: 44px;
-					padding-left: 22px;
-					padding-right: 22px;
+					padding: 15px 22px;
 				}
 
 				a {
