@@ -16,7 +16,7 @@ product_results:
 {{#partial "page"}}
 {{> components/common/breadcrumbs breadcrumbs=breadcrumbs}}
 {{{snippet 'search'}}}
-<section class="nav">
+<section class="nav" catalog-listing-wrap>
     {{#if forms.search.query}}
         <div id="search-results-heading">
             {{>components/search/heading}}

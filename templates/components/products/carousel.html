@@ -1,4 +1,4 @@
-<section class="productCarousel"
+<section class="productCarousel" b2b-products-carousel
     data-list-name="{{list}}"
     data-slick='{
         "dots": true,
@@ -9,7 +9,7 @@
     }'
 >
     {{#each products}}
-    <div class="productCarousel-slide">
+    <div class="productCarousel-slide" catalog-product-{{id}}>
             {{> components/products/card settings=../settings theme_settings=../theme_settings customer=../customer event="list" position=(add @index 1)}}
     </div>
     {{/each}}

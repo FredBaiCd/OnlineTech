@@ -8,6 +8,13 @@
         {{/if}}
     {{/each}}
 
+    <!-- for b2b -->
+{{#if product.price.without_tax}}
+<span b2b-product-base-price="{{product.price.without_tax.value}}"></span>
+{{else}}
+<span b2b-product-base-price="{{product.price.with_tax.value}}"></span>
+{{/if}}
+
     <section class="productView-details">
         <div class="productView-product">
             <h1 class="productView-title" {{#if schema}}itemprop="name"{{/if}}>{{product.title}}</h1>
@@ -249,6 +256,11 @@
             {{> components/products/description}}
         {{/if}}
     </article>
+
+    <!-- for bundleb2b -->
+    <div class="b2b-loading-overlay" style="display: none;" id="b2b_loading_overlay">
+        <img src="{{cdn 'img/loading.gif'}}" alt="">
+    </div>
 </div>
 
 <div id="previewModal" class="modal modal--large" data-reveal>
