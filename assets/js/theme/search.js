@@ -236,6 +236,15 @@ export default class Search extends CatalogPage {
             $('html, body').animate({
                 scrollTop: 0,
             }, 100);
+
+
+            if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") != "none") {
+                //for b2b user
+                this.handleCatalogProducts();
+            } else {
+                //for non b2b user
+                $(".navList-item .product-count").show();
+            }
         });
     }
 

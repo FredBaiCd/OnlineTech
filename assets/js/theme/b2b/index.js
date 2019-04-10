@@ -566,7 +566,7 @@ export default function() {
       When the user hasn't got the `catalog_products` data yet, he clicks on other b2b pages.
       Regain `catalog_products` data
        */
-      if(!sessionStorage.getItem("catalog_products")) {
+      if (!sessionStorage.getItem("catalog_products")) {
         if (sessionStorage.getItem("catalog_id")) {
           getCatalogProducts(sessionStorage.getItem("catalog_id"), function() {
             window.location.reload();

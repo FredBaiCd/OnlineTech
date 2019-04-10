@@ -42,4 +42,17 @@ export default function (context) {
             }
         }
     });
+
+    // for bundleb2b
+    const handleRoleId = function() {
+        if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") != "none") {
+            const bundleb2b_user = JSON.parse(sessionStorage.getItem("bundleb2b_user"));
+            if (bundleb2b_user.role_id == "0") {
+                $("#form-action-addToCart").hide();
+                console.log("Junior User");
+            } else if (bundleb2b_user.role_id == "1" || bundleb2b_user.role_id == "2") {
+                console.log("Admin User");
+            }
+        }
+    }
 }

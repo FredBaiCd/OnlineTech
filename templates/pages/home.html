@@ -43,15 +43,21 @@ blog:
 
 
     {{#if products.featured}}
+    <div home-catalog-product>
         {{> components/products/featured products=products.featured columns=theme_settings.homepage_featured_products_column_count}}
+        </div>
     {{/if}}
 
     {{#if products.top_sellers}}
+    <div home-catalog-product>
         {{> components/products/top products=products.top_sellers columns=theme_settings.homepage_top_products_column_count}}
+        </div>
     {{/if}}
 
     {{#if products.new}}
+    <div home-catalog-product>
         {{> components/products/new products=products.new columns=theme_settings.homepage_new_products_column_count}}
+        </div>
     {{/if}}
 
 {{/partial}}
