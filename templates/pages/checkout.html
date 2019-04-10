@@ -32,6 +32,202 @@
 
 {{{ footer.scripts }}}
 
+<!-- for bundleb2b start-->
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script>
+    $("body").on('change', '[name="paymentProviderRadio"]', function(){
+        // PO
+        $("#custom_po_number_err").remove();
+        $("#checkout-payment-continue-custom").hide();
+        $("#checkout-payment-continue-email").hide();
+
+        if($(this).attr("id") == "radio-cheque" && $(this).prop('checked') == true) {
+            const $checkItemBody = $(this).parents(".form-checklist-item").find(".form-checklist-body");
+            $checkItemBody.html(`
+                <div class="form-checklist-container">
+                    <div class="form-ccFields">
+                        <div class="form-field--ccNumber form-field">
+                        <label class="form-label optimizedCheckout-form-label" for="ccNumber">PO #</label>
+                        <input type="text" id="custom_po_number" class="form-input optimizedCheckout-form-input" required/>
+                        </div>
+                    </div>
+                </div>`);
+
+            $("#checkout-payment-continue").hide();
+            $(`<button class="button button--action button--large button--slab optimizedCheckout-buttonPrimary" id="checkout-payment-continue-custom" type="button">
+                    Place Order
+                </button>`).insertAfter($("#checkout-payment-continue"));
+
+        } else if($(this).attr("id") == "radio-instore" && $(this).prop('checked') == true) {
+            const $checkItemBody = $(this).parents(".form-checklist-item").find(".form-checklist-body");
+            $checkItemBody.html(`
+                <div class="form-checklist-container">
+                    <div class="form-ccFields">
+                        <div class="form-field--ccNumber form-field">
+                        <label class="form-label optimizedCheckout-form-label" for="ccNumber">Please Enter the Email to receive the invoice:</label>
+                        <input type="text" id="custom_email" class="form-input optimizedCheckout-form-input" required/>
+                        </div>
+                    </div>
+                </div>`);
+
+            $("#checkout-payment-continue").hide();
+            $(`<button class="button button--action button--large button--slab optimizedCheckout-buttonPrimary" id="checkout-payment-continue-email" type="button">
+                    Place Order
+                </button>`).insertAfter($("#checkout-payment-continue"));
+        } else {
+            if($("#checkout-payment-continue-custom").length > 0) {
+                $("#checkout-payment-continue-custom").remove();
+            }
+
+            $("#checkout-payment-continue").show();
+
+
+            // $("")
+        }
+
+    });
+
+    // old save po function, can't update customer message, so using API to save po number
+    /*$("body").on('click', '#checkout-payment-continue-custom', (event)=> {
+
+        fetch('/api/storefront/cart', {
+          credentials: 'same-origin'
+        }).then(function(response) {
+            return response.json();
+        }).then(function(cartJson) {
+            return cartJson[0].id;
+        }).then(function(cartId) {
+            console.log(cartId);
+            return fetch('/api/storefront/checkouts/'+cartId, {
+                credentials: 'same-origin'
+            }).then(response => response.json());
+        }).then(function(checkoutJson) {
+
+            const cartId = checkoutJson.id;
+            const customerMessage = checkoutJson.customerMessage;
+            let poMessage = $("#custom_po_number").val() || "";
+            if(poMessage != "") {
+                poMessage = "Purchase Order:" + poMessage;
+            }
+            const new_customerMessage = poMessage + customerMessage;
+            const customerMessageObj = {
+                "customerMessage": new_customerMessage
+            };
+            return fetch('/api/storefront/checkouts/'+cartId, {
+                method: "PUT",
+                credentials: 'same-origin',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(customerMessageObj),
+            }).then(response => response.json());
+        }).then(function(checkoutJson){
+            console.log("--------------");
+            console.log(checkoutJson.customerMessage);
+            let poMessage = $("#custom_po_number").val() || "";
+            sessionStorage.setItem("po_number", poMessage);
+            $("#checkout-payment-continue").click();
+
+        }).catch(function(error) {
+            console.log(error);
+        });
+    });*/
+
+    $("body").on('focus', '#custom_po_number', (event)=> {
+        $("#custom_po_number_err").remove();
+    });
+
+    /*save po number to our databse and order*/
+    $("body").on('click', '#checkout-payment-continue-custom', (event)=> {
+        let can_purchase = true;
+
+        if($("#radio-cheque").prop("checked") == true) {
+            if($("#custom_po_number").length > 0 && $("#custom_po_number").val().trim() != "") {
+                let poMessage = $("#custom_po_number").val() || "";
+                sessionStorage.setItem("po_number", poMessage);
+            } else {
+                can_purchase = false;
+            }
+        }
+
+        if(can_purchase) {
+            $("#checkout-payment-continue").click();
+        } else {
+            $("#custom_po_number_err").remove();
+            $('<span id="custom_po_number_err" style="display:block;color:red;font-size:14px;margin-top:5px;">PO # is required</span>').insertAfter($("#custom_po_number"));
+        }
+    });
+
+    /*save email to our databse and order*/
+    $("body").on('click', '#checkout-payment-continue-email', (event)=> {
+        debugger
+        let err_type = 0; //error type: 0.no err 1.email null 2.email format error
+
+        if($("#radio-instore").prop("checked") == true) {
+            let email = $("#custom_email").val() || "";
+            if(email.trim() == "") {
+                err_type = 1;
+            } else if(!/^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/.test(email)) {
+                err_type = 2;
+            } else {
+                sessionStorage.setItem("pay_email", email);
+            }
+        }
+
+        if(err_type == 0) {
+            $("#checkout-payment-continue").click();
+        } else {
+            let err_msg = 'Email is required';
+            if(err_type == 2) {
+                err_msg = 'Email format error';
+            }
+            $("#custom_po_number_err").remove();
+            $('<span id="custom_po_number_err" style="display:block;color:red;font-size:14px;margin-top:5px;">' + err_msg + '</span>').insertAfter($("#custom_email"));
+        }
+    });
+
+    if(sessionStorage.getItem("company_payments")) {
+        const company_payments = JSON.parse(sessionStorage.getItem("company_payments"));
+        //console.log(company_payments);
+        var interval = setInterval(function(){
+            if($(".checkout-step--payment .checkout-form .form-checklist .form-checklist-item").length > 0) {
+                clearInterval(interval);
+                if (sessionStorage.getItem("bundleb2b_user") == "none") {
+                    $($("#radio-instore")[0].parentNode.parentNode.parentNode).hide();
+                    $($("#radio-cheque")[0].parentNode.parentNode.parentNode).hide();
+                }
+
+                //test PO
+                const $checkoutItems = $(".checkout-step--payment .checkout-form .form-checklist .form-checklist-item");
+                $checkoutItems.each(function(){
+                    const $paymentEle = $(this).find('[name="paymentProviderRadio"]');
+                    const paymentCode = $paymentEle.attr("id").replace("radio-", "");
+                    let isEnabled = false;
+                    for (let i = 0; i < company_payments.length; i++) {
+                        if(company_payments[i].code == paymentCode) {
+                            isEnabled = true;
+                        }
+                    }
+
+                    if(!isEnabled) {
+                        $(this).remove();
+                    }
+                });
+                if($(".checkout-step--payment .checkout-form .form-checklist .form-checklist-item").length > 0) {
+                    $(".checkout-step--payment .checkout-form .form-checklist .form-checklist-item").eq(0).find('[name="paymentProviderRadio"]').prop("checked", true);
+                }
+
+            }
+        },100);
+
+    }
+
+
+
+</script>
+<!-- for bundleb2b end-->
+
 {{/partial}}
 
 {{> layout/empty}}

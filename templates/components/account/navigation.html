@@ -12,6 +12,10 @@
                 <li class="navBar-item is-active">
                     <a class="navBar-action" href="{{urls.account.orders.all}}">{{lang 'account.nav.orders'}}</a>
                 </li>
+            {{else if page_type '===' 'page'}}
+                <li class="navBar-item is-active">
+                    <a class="navBar-action" href="{{urls.account.orders.all}}">{{lang 'account.nav.orders'}}</a>
+                </li>
             {{else}}
                 <li class="navBar-item is-active">{{lang 'account.nav.orders'}}</li>
             {{/if}}
@@ -30,11 +34,21 @@
             {{/if}}
         {{/if}}
         {{#if account_page '===' 'messages'}}
+            {{#if customer.num_new_messages}}
             <li class="navBar-item is-active">{{lang 'account.nav.messages' num_new_messages=customer.num_new_messages}}</li>
+            {{else}}
+            <li class="navBar-item is-active">{{lang 'account.nav.messages' num_new_messages=0}}</li>
+            {{/if}}
         {{else}}
+            {{#if customer.num_new_messages}}
             <li class="navBar-item">
                 <a class="navBar-action" href="{{urls.account.inbox}}">{{lang 'account.nav.messages' num_new_messages=customer.num_new_messages}}</a>
             </li>
+            {{else}}
+            <li class="navBar-item">
+                <a class="navBar-action" href="{{urls.account.inbox}}">{{lang 'account.nav.messages' num_new_messages=0}}</a>
+            </li>
+            {{/if}}
         {{/if}}
         {{#if account_page '===' 'addresses'}}
             <li class="navBar-item is-active">{{lang 'account.nav.addresses'}}</li>
@@ -68,7 +82,7 @@
                 <a class="navBar-action" href="{{urls.account.recent_items}}">{{lang 'account.nav.recently_viewed'}}</a>
             </li>
         {{/if}}
-        
+
 
         <!-- for bundleb2b -->
         {{#if account_page '===' 'shipping_lists'}}
