@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import 'foundation-sites/js/foundation/foundation';
 import 'foundation-sites/js/foundation/foundation.dropdown';
 import utils from '@bigcommerce/stencil-utils';
@@ -22,7 +23,23 @@ export default function (context) {
 
             modal.$content.find('[data-slick]').slick();
 
+            // for bundleb2b
+            handleRoleId();
             return new ProductDetails(modal.$content.find('.quickView'), context);
+
         });
+
+        // for bundleb2b
+        const handleRoleId = function() {
+            if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") != "none") {
+                const bundleb2b_user = JSON.parse(sessionStorage.getItem("bundleb2b_user"));
+                if (bundleb2b_user.role_id == "0") {
+                    $("#form-action-addToCart").hide();
+                    console.log("Junior User");
+                } else if (bundleb2b_user.role_id == "1" || bundleb2b_user.role_id == "2") {
+                    console.log("Admin User");
+                }
+            }
+        }
     });
 }

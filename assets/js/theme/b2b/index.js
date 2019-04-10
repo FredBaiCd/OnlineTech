@@ -17,7 +17,7 @@ import priceStyle from './prices-style'
 export default function() {
   let isSearchPage = location.href.indexOf('b2b-search');
   if (isSearchPage > -1) {
-    let params = location.href.split('search_query=')[1];
+    let params = location.href.split('search_query_adv=')[1];
     let keywords = params.split('&')[0];
     b2bSearch(keywords);
   }
