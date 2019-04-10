@@ -17,7 +17,7 @@ import priceStyle from './prices-style'
 export default function() {
   let isSearchPage = location.href.indexOf('b2b-search');
   if (isSearchPage > -1) {
-    let params = location.href.split('search_query=')[1];
+    let params = location.href.split('search_query_adv=')[1];
     let keywords = params.split('&')[0];
     b2bSearch(keywords);
   }
@@ -566,7 +566,7 @@ export default function() {
       When the user hasn't got the `catalog_products` data yet, he clicks on other b2b pages.
       Regain `catalog_products` data
        */
-      if(!sessionStorage.getItem("catalog_products")) {
+      if (!sessionStorage.getItem("catalog_products")) {
         if (sessionStorage.getItem("catalog_id")) {
           getCatalogProducts(sessionStorage.getItem("catalog_id"), function() {
             window.location.reload();

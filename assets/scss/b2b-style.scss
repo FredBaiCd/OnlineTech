@@ -1507,6 +1507,7 @@ section.quickSearchResults {
 	background-color: stencilColor("color-info");
 	color: #fff;
 	line-height: 15px;
+	margin: 10px 0;
 
 	.close-icon {
 		display: inline-block;
@@ -1522,6 +1523,11 @@ section.quickSearchResults {
 		margin-right: 10px;
 		text-decoration: none;
 		vertical-align: top;
+	}
+
+	.button {
+		padding-top: 14px;
+		padding-bottom: 14px;
 	}
 }
 

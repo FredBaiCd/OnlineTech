@@ -9,8 +9,9 @@ export default function() {
     const TOP_STYLING = 'top: 49px;';
     const $quickSearchResults = $('.quickSearchResults');
     const $quickSearchDiv = $('#quickSearch');
-    const $searchQuery = $('#search_query');
-    const stencilDropDownExtendables = {
+    //const $searchQuery = $('#search_query');
+    const $searchQuery = $('#search_query_adv');
+    /*const stencilDropDownExtendables = {
         hide: () => {
             $searchQuery.trigger('blur');
         },
@@ -25,8 +26,8 @@ export default function() {
             $searchQuery.trigger('focus');
             event.stopPropagation();
         },
-    };
-    const stencilDropDown = new StencilDropDown(stencilDropDownExtendables);
+    };*/
+    /*const stencilDropDown = new StencilDropDown(stencilDropDownExtendables);
     stencilDropDown.bind($('[data-search="quickSearch"]'), $quickSearchDiv, TOP_STYLING);
 
     stencilDropDownExtendables.onBodyClick = (e, $container) => {
@@ -36,7 +37,7 @@ export default function() {
         if ($(e.target).closest('[data-prevent-quick-search-close], .modal-background').length === 0) {
             stencilDropDown.hide($container);
         }
-    };
+    };*/
 
     // stagger searching for 200ms after last input
     const doSearch = _.debounce((searchQuery) => {
@@ -91,6 +92,10 @@ export default function() {
         $searchQuery.on('focus', event => {
             $('.snize-ac-results').css("display", "none");
             $('.snize-ac-results').remove();
+
+            $(event.currentTarget).parents("form").attr('action', '/b2b-search');
+
+
         });
 
         $searchQuery.unbind('keydown').bind('keydown', function(e) {
@@ -98,7 +103,7 @@ export default function() {
             if (key == 13) {
                 console.log("key enter");
                 e.preventDefault();
-                $quickSearchDiv.find("form").submit();
+                $(e.currentTarget).parents("form").submit();
             }
 
             $('.snize-ac-results').css("display", "none");
