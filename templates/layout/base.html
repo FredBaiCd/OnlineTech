@@ -16,27 +16,24 @@
         </script>
 
         {{ getFontsCollection }}
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Source+Sans+Pro:400,600,700" rel="stylesheet">
         {{{stylesheet '/assets/css/theme.css'}}}
 
         {{{head.scripts}}}
         {{{head.rsslinks}}}
 
         {{inject 'themeSettings' theme_settings}}
+        {{inject 'store_hash' settings.store_hash}}
         {{inject 'genericError' (lang 'common.generic_error')}}
         {{inject 'maintenanceMode' settings.maintenance}}
         {{inject 'urls' urls}}
         {{inject 'secureBaseUrl' settings.secure_base_url}}
         {{inject 'cartId' cart_id}}
         {{inject 'template' template}}
-
-        <!-- b2b inject start-->
         {{inject "page_templete" template}}
         {{inject "customer" customer}}
         {{inject "cartData" cart.items}}
         {{inject "b2bSettings" settings}}
-        <!-- b2b inject end-->
-
-
         {{{snippet 'htmlhead'}}}
     </head>
     <body>

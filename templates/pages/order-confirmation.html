@@ -31,6 +31,81 @@
 
 {{{ footer.scripts }}}
 
+<!-- for bundleb2b start-->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script>
+// save po number to our database
+if(sessionStorage.getItem("po_number")) {
+    const po_number = sessionStorage.getItem("po_number");
+    const postData = {
+        'store_hash':'{{settings.store_hash}}',
+        'order_id':'{{checkout.order.id}}',
+        'user_id':'{{customer.id}}',
+        'po_number': po_number
+    };
+
+    $.ajax({
+        type: "POST",
+        url: 'https://8l6t4dsd6e.execute-api.us-west-2.amazonaws.com/prod/purchaseOrderNumber',
+        contentType: "application/json",
+        data: JSON.stringify(postData),
+        success: function(data) {
+          console.log(data);
+          sessionStorage.removeItem("po_number");
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+        }
+    });
+} else if(sessionStorage.getItem("pay_email")) {
+    const pay_email = sessionStorage.getItem("pay_email");
+    const bundleb2b_user = JSON.parse(sessionStorage.getItem("bundleb2b_user"));
+    const postData = {
+        'store_hash':'{{settings.store_hash}}',
+        'order_id':'{{checkout.order.id}}',
+        'company_id': bundleb2b_user.company_id,
+        'email': pay_email
+    };
+
+    $.ajax({
+        type: "POST",
+        url: 'https://8l6t4dsd6e.execute-api.us-west-2.amazonaws.com/prod/invoiceCreate',
+        contentType: "application/json",
+        data: JSON.stringify(postData),
+        success: function(data) {
+            console.log(data);
+            sessionStorage.removeItem("pay_email");
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+        }
+    });
+}
+
+if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") != "none") {
+    const b2bUser = JSON.parse(sessionStorage.getItem("bundleb2b_user"));
+    if(b2bUser.role_id == 10) {
+        const postData = {
+            'store_hash':'{{settings.store_hash}}',
+            'order_id':'{{checkout.order.id}}',
+            'customer_id':'{{customer.id}}',
+            'company_id': b2bUser.company_id
+        };
+
+        $.ajax({
+            type: "POST",
+            url: 'https://8l6t4dsd6e.execute-api.us-west-2.amazonaws.com/prod/saleCreateOrder',
+            contentType: "application/json",
+            data: JSON.stringify(postData),
+            success: function(data) {
+                console.log(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+            }
+        });
+    }
+}
+</script>
+<!-- for bundleb2b end-->
+
 {{/partial}}
 
 {{> layout/empty}}
