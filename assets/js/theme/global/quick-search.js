@@ -1,11 +1,11 @@
+import $ from 'jquery';
 import _ from 'lodash';
 import utils from '@bigcommerce/stencil-utils';
 import StencilDropDown from './stencil-dropdown';
-
 import config from '../b2b/config';
 import pricesStyle from '../b2b/prices-style';
 
-export default function() {
+export default function () {
     const TOP_STYLING = 'top: 49px;';
     const $quickSearchResults = $('.quickSearchResults');
     const $quickSearchDiv = $('#quickSearch');
@@ -30,6 +30,14 @@ export default function() {
     /*const stencilDropDown = new StencilDropDown(stencilDropDownExtendables);
     stencilDropDown.bind($('[data-search="quickSearch"]'), $quickSearchDiv, TOP_STYLING);
 
+    //for b2b
+    if (sessionStorage.getItem("bundleb2b_user") != "none") {
+        const bundleb2b_user = JSON.parse(sessionStorage.getItem("bundleb2b_user"));
+        if (bundleb2b_user.role_id == "0" || bundleb2b_user.role_id == "1" || bundleb2b_user.role_id == "2" || bundleb2b_user.role_id == "10") {
+            $("#b2b_search_form").attr('action', '/b2b-search');
+        }
+    }
+
     stencilDropDownExtendables.onBodyClick = (e, $container) => {
         // If the target element has this data tag or one of it's parents, do not close the search results
         // We have to specify `.modal-background` because of limitations around Foundation Reveal not allowing
@@ -41,26 +49,18 @@ export default function() {
 
     // stagger searching for 200ms after last input
     const doSearch = _.debounce((searchQuery) => {
-        utils.api.search.search(searchQuery, {
-            template: 'search/quick-results'
-        }, (err, response) => {
+        utils.api.search.search(searchQuery, { template: 'search/quick-results' }, (err, response) => {
             if (err) {
                 return false;
             }
 
             $quickSearchResults.html(response);
+            //handleCatalogProducts();
         });
     }, 200);
 
     utils.hooks.on('search-quick', (event) => {
         const searchQuery = $(event.currentTarget).val();
-
-        // server will only perform search with at least 3 characters
-        /*if (searchQuery.length < 3) {
-            return;
-        }
-
-        doSearch(searchQuery);*/
 
         if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") != "none") {
             // for b2b user
@@ -81,6 +81,7 @@ export default function() {
 
             doSearch(searchQuery);
         }
+
     });
 
     // for bundleb2b
@@ -92,10 +93,7 @@ export default function() {
         $searchQuery.on('focus', event => {
             $('.snize-ac-results').css("display", "none");
             $('.snize-ac-results').remove();
-
             $(event.currentTarget).parents("form").attr('action', '/b2b-search');
-
-
         });
 
         $searchQuery.unbind('keydown').bind('keydown', function(e) {
@@ -103,6 +101,7 @@ export default function() {
             if (key == 13) {
                 console.log("key enter");
                 e.preventDefault();
+                $quickSearchDiv.find("form").submit();
                 $(e.currentTarget).parents("form").submit();
             }
 
@@ -280,4 +279,5 @@ export default function() {
             });
         });
     }, 200);
+
 }

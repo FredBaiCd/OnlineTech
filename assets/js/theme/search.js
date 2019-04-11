@@ -1,7 +1,6 @@
-import {
-    hooks
-} from '@bigcommerce/stencil-utils';
+import { hooks } from '@bigcommerce/stencil-utils';
 import CatalogPage from './catalog';
+import $ from 'jquery';
 import FacetedSearch from './common/faceted-search';
 import compareProducts from './global/compare-products';
 import urlUtils from './common/url-utils';
@@ -146,6 +145,7 @@ export default class Search extends CatalogPage {
         } else {
             $(".navList-item .product-count").show();
         }
+
     }
 
     loadTreeNodes(node, cb) {
@@ -222,6 +222,16 @@ export default class Search extends CatalogPage {
             $facetedSearchContainer.html(content.sidebar);
             $searchHeading.html(content.heading);
             $searchCount.html(content.productCount);
+
+
+            if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") != "none") {
+                //for b2b user
+                this.handleCatalogProducts();
+            } else {
+                //for non b2b user
+                $(".navList-item .product-count").show();
+            }
+
 
             $('html, body').animate({
                 scrollTop: 0,
