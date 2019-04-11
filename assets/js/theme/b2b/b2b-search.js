@@ -159,7 +159,7 @@ export default function(keywords) {
 				`</article></li>`);
 
 			getProductSummary(product_id, function(summary) {
-				console.log(summary);
+				//console.log(summary);
 				$(`[data-product-summary-${product_id}]`).text(summary);
 			});
 		}

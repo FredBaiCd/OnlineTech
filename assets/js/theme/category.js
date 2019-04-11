@@ -446,7 +446,7 @@ export default class Category extends CatalogPage {
                 `</article></li>`);
 
             this.getProductSummary(product_id, function(summary) {
-                console.log(summary);
+                //console.log(summary);
                 $(`[data-product-summary-${product_id}]`).text(summary);
             });
         }

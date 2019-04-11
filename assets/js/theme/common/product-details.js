@@ -241,7 +241,7 @@ export default class ProductDetails {
 
             postData.products = products_arr;
             console.log(postData);
-            //return;
+            return;
 
             $.ajax({
                 type: "PUT",
