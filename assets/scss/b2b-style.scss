@@ -16,8 +16,8 @@ $b2bBorderColor: #a0a0a0;
 .account--fixed  {
 	.navBar--account {
 		@include breakpoint("medium") {
-			margin-left: -80px;
-			margin-right: -80px;
+			margin-left: -110px;
+			margin-right: -110px;
 		}
 	}
 }
@@ -2229,4 +2229,19 @@ section.quickSearchResults {
 	text-decoration: line-through;
 	margin-right: 2px;
 	opacity: 0.8;
+}
+
+.form-shoppinglist {
+
+	.dropdown-menu-button {
+		margin-right: 0!important;
+	}
+	.dropdown-menu {
+		max-width: none;
+
+		.button {
+			margin: 0;
+			width: 100%;
+		}
+	}
 }

@@ -38,7 +38,7 @@
             {{{region name="product_below_price"}}}
 
             {{product.detail_messages}}
-        <div class="bl-sku">{{lang 'products.sku'}} <strong>{{product.sku}}</strong></div>
+        <div class="bl-sku">{{lang 'products.sku'}} <strong data-product-sku>{{product.sku}}</strong></div>
             <div class="productView-rating"{{#if product.num_reviews '>' 0}}{{#if schema}} itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating"{{/if}}{{/if}}>
             {{#if settings.show_product_rating}}
             {{#if product.num_reviews '>' 0}}
@@ -149,6 +149,29 @@
                     </div>
                 {{/if}}
 
+                <!-- for bundleb2b -->
+                <div tier-price-container style="display: none;">
+                    <dt class="productView-info-name">{{lang 'products.bulk_pricing.title'}}</dt>
+                    <dd class="productView-info-value">
+                        <a href="{{url}}" data-reveal-id="tierPricingModal">
+                            {{lang 'products.bulk_pricing.view'}}
+                        </a>
+                    </dd>
+                    <div id="tierPricingModal" class="modal modal--small" data-reveal>
+                        <div class="modal-header">
+                            <h2 class="modal-header-title">Tier Price Rates</h2>
+                            <a href="#" class="modal-close" aria-label="Close"><span aria-hidden="true">&#215;</span></a>
+                        </div>
+                        <div class="modal-body">
+                            <p>{{!lang 'products.bulk_pricing.instructions'}}</p>
+                            <ul>
+                                <li>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
                 <!--{{#each product.custom_fields}}
                     <dt class="productView-info-name">{{name}}:</dt>
                     <dd class="productView-info-value">{{{value}}}</dd>
@@ -244,6 +267,22 @@
             {{#if settings.show_wishlist}}
                 {{> components/common/wishlist-dropdown}}
             {{/if}}
+
+            <!-- for bunldeb2b -->
+            <form action="" class="form form-wishlist form-shoppinglist form-action" data-shoppinglist-add method="post" style="display: none;">
+                <a aria-controls="shoppinglist-dropdown" aria-expanded="false" class="button dropdown-menu-button" data-dropdown="shoppinglist-dropdown">
+                    <span>Add to Shopping List</span>
+                    <i aria-hidden="true" class="icon">
+                        <svg>
+                            <use xlink:href="#icon-chevron-down" />
+                        </svg>
+                    </i>
+                </a>
+                <ul aria-hidden="true" class="dropdown-menu" data-dropdown-content id="shoppinglist-dropdown" tabindex="-1">
+                    
+                </ul>
+            </form>
+
         </div>
         {{> components/common/share}}
         {{{snippet 'product_details'}}}

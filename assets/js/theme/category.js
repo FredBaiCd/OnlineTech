@@ -8,6 +8,7 @@ import FacetedSearch from './common/faceted-search';
 import config from './b2b/config';
 import './b2b/tools/jqPaginator.js';
 import pricesStyle from './b2b/prices-style';
+import utils from '@bigcommerce/stencil-utils';
 
 export default class Category extends CatalogPage {
     onReady() {
@@ -22,6 +23,7 @@ export default class Category extends CatalogPage {
 
         // for bundleb2b
         this.gCatalogId;
+        this.gRoleId;
         this.gCategoryId = this.context.categoryId;
         this.gCatalogProducts;
         this.selectedFacets = {};
@@ -51,6 +53,7 @@ export default class Category extends CatalogPage {
     initB2bFeature() {
         if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") != "none") {
             const b2bUserInfo = JSON.parse(sessionStorage.getItem("bundleb2b_user"));
+            this.gRoleId = b2bUserInfo.role_id;
             if (b2bUserInfo.catalog_id) {
                 this.gCatalogId = b2bUserInfo.catalog_id;
             }
@@ -60,7 +63,7 @@ export default class Category extends CatalogPage {
 
             this.gCatalogProducts = JSON.parse(sessionStorage.getItem("catalog_products") || "{}");
 
-            $(".page").addClass("b2b-search-page").html(`<aside class="page-sidebar-b2b" id="faceted-search-container-b2b">
+            /*$(".page").addClass("b2b-search-page").html(`<aside class="page-sidebar-b2b" id="faceted-search-container-b2b">
                 <div class="page-sidebar-inner" id="product-filters-container">
                 </div>
             </aside>
@@ -72,7 +75,17 @@ export default class Category extends CatalogPage {
                     <ul class="pagination-list" id="jqPagination"></ul>
 
                 </div>
-            </scetion>`);
+            </scetion>`);*/
+            $(".page").addClass("b2b-search-page").find("#product-listing-container").show().html(`
+                <section class="page-content">
+                    <div id="b2b_search_result" style="margin-bottom:40px;">
+                        <ul class="productList">
+                        </ul>
+                        <ul class="pagination-list" id="jqPagination"></ul>
+
+                    </div>
+                </scetion>
+            `);
 
 
             const filterString = `&filtersBy={"category_id":"${this.gCategoryId}"}`;
@@ -81,7 +94,7 @@ export default class Category extends CatalogPage {
 
             this.search(ajaxUrl).then(res => {
                 this.changeSort();
-                this._initFacets(res);
+                //this._initFacets(res);
                 this._initProducts(res);
 
                 if (res.total_count == 0) {
@@ -99,13 +112,15 @@ export default class Category extends CatalogPage {
                         this.pageNumber = num;
                         let ajaxUrl = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&is_facets=1&catalog_id=${this.gCatalogId}&pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&sortField=${this.sortField}&sortOrder=${this.sortOrder}`;
                         this.search(ajaxUrl).then(res => {
-                            this._initFacets(res);
+                            //this._initFacets(res);
                             this._initProducts(res);
                         });
                     }
                 });
 
             });
+        } else {
+            $('#product-listing-container').show();
         }
     }
 
@@ -114,6 +129,7 @@ export default class Category extends CatalogPage {
         let productsHtml = "";
         for (let j = start; j < end; j++) {
             const product = categoryProducts[j];
+            const product_id = product.product_id;
             productsHtml += `<li class="product">
                             <article class="card">
                                 <figure class="card-figure">
@@ -166,7 +182,7 @@ export default class Category extends CatalogPage {
 
         }
 
-        $("#product-listing-container .productGrid").html(productsHtml);
+        $("#product-listing-container .productList").html(productsHtml);
 
     }
 
@@ -338,18 +354,20 @@ export default class Category extends CatalogPage {
             this.sortOrder = $("#sort").find("option:selected").data("sort");
             let ajaxUrl = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&is_facets=1&catalog_id=${this.gCatalogId}&pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&sortField=${this.sortField}&sortOrder=${this.sortOrder}`;
             this.search(ajaxUrl).then(res => {
-                this._initFacets(res);
+                //this._initFacets(res);
                 this._initProducts(res);
             });
         })
     }
 
     _initProducts(res) {
-        let ul = $("#b2b_search_result").find(".productGrid");
+        //let ul = $("#b2b_search_result").find(".productGrid");
+        let ul = $("#b2b_search_result").find(".productList");
         ul.empty();
 
         let prods = res.payload;
         if (!prods || prods.length == 0) {
+            $("#b2b_search_result").html("There are no products listed under this category.");
             return;
         }
 
@@ -376,31 +394,61 @@ export default class Category extends CatalogPage {
             catalog_price = pricesStyle(catalog_price, 2);
             console.log("this is catalog_price " + catalog_price);
 
-            let pro_bg_a = `<a href="${prods[i].product_url}">` +
-                `<div class="card-img-container">` +
-                `<img class="card-image lazyautosizes lazyloaded" data-sizes="auto" src="${prods[i].primary_image.standard_url}" data-src="${prods[i].primary_image.standard_url}" alt="" title="" sizes="263px">` +
-                `</div></a>`;
-            let figcaption = `<figcaption class="card-figcaption"><div class="card-figcaption-body">` +
-                `<a class="button button--small card-figcaption-button quickview" data-product-id="${prods[i].product_id}">Quick view</a>` +
-                `<label class="button button--small card-figcaption-button" for="compare-${prods[i].product_id}">Compare ` +
-                `<input type="checkbox" name="products[]" value="${prods[i].product_id}" id="compare-${prods[i].product_id}" data-compare-id="${prods[i].product_id}">` +
-                `</label>` +
-                `</div></figcaption>`;
+            // product rating
+            const product_rating = parseInt(prods[i].reviews_rating_sum);
+            let pro_rating = `<p class="listItem-rating" data-rating="${product_rating}" data-test-info-type="productRating">
+                <span class="rating--small">`;
 
-            let card_body = `<h4 class="card-title"><a href="${prods[i].product_url}">${prods[i].product_name}</a></h4>` +
-                `<div class="card-text" data-test-info-type="price">` +
-                `<div class="price-section price-section--withoutTax non-sale-price--withoutTax" style="display: none;">Was:` +
-                `<span data-product-non-sale-price-without-tax="" class="price price--non-sale"></span>` +
-                `</div>` +
+            for (let j = 0; j < 5; j++) {
+                if (product_rating > j) {
+                    pro_rating += `<span class="icon icon--ratingFull">
+                        <svg>
+                            <use xlink:href="#icon-star" />
+                        </svg>
+                    </span>`;
+                } else {
+                    pro_rating += `<span class="icon icon--ratingEmpty">
+                        <svg>
+                            <use xlink:href="#icon-star" />
+                        </svg>
+                    </span>`;
+                }
+            }
+            pro_rating += `</span></p>`;
+
+
+            let pro_bg_a = `<img class="listItem-image lazyautosizes lazyloaded" data-sizes="auto" src="${prods[i].primary_image.standard_url}" data-src="${prods[i].primary_image.standard_url}" alt="" title="" sizes="263px">`;
+            let figcaption = `<div class="listItem-figureBody">` +
+                `<a class="button button--small listItem-button quickview" data-product-id="${prods[i].product_id}">Quick view</a>` +
+                `</div>`;
+
+            let card_action = ``;
+            if (this.gRoleId == "0") {
+                card_action = `<a href="${prods[i].product_url}" class="button button--primary">View Detail</a>`;
+            } else {
+                card_action = `<a href="/cart.php?action=add&amp;product_id=${prods[i].product_id}" data-event-type="product-click" class="button button--primary">Add to Cart</a>`;
+            }
+            let card_body = `<div class="listItem-details">${pro_rating}<h4 class="listItem-title"><a href="${prods[i].product_url}">${prods[i].product_name}</a></h4><p data-product-summary-${product_id}></p></div>` +
+                `<div class="listItem-actions">` +
+                `<div class="listItem-price">` +
                 `<div class="price-section price-section--withoutTax">` +
                 `<span class="price-label"></span>` +
                 `<span class="price-now-label" style="display: none;">Now:</span>` +
-                `${rrp_price}<span data-product-price-without-tax="" class="price price--withoutTax">$${catalog_price}</span>` +
-                `</div></div>`;
-            ul.append(`<li class="product"><article class="card">` +
-                `<figure class="card-figure">${pro_bg_a}${figcaption}</figure>` +
-                `<div class="card-body">${card_body}</div>` +
-                `</article></li>`)
+                `${rrp_price}<span data-product-price-without-tax="" class="price price--withoutTax">$${pricesStyle(catalog_price,2)}</span>` +
+                `</div>` +
+                `</div>` +
+                `${card_action}` +
+                `</div>`;
+
+            ul.append(`<li class="product"><article class="listItem">` +
+                `<figure class="listItem-figure">${pro_bg_a}${figcaption}</figure>` +
+                `<div class="listItem-body"><div class="listItem-content">${card_body}</div></div>` +
+                `</article></li>`);
+
+            this.getProductSummary(product_id, function(summary) {
+                console.log(summary);
+                $(`[data-product-summary-${product_id}]`).text(summary);
+            });
         }
     }
 
@@ -588,7 +636,7 @@ export default class Category extends CatalogPage {
             this.search(ajaxUrl2).then(res => {
                 console.log(res);
 
-                this._initFacets(res);
+                //this._initFacets(res);
                 this._initProducts(res);
 
             });
@@ -640,7 +688,7 @@ export default class Category extends CatalogPage {
             this.search(ajaxUrl2).then(res => {
                 console.log(res);
 
-                this._initFacets(res);
+                //this._initFacets(res);
                 this._initProducts(res);
 
                 if (res.total_count == 0) {
@@ -659,7 +707,7 @@ export default class Category extends CatalogPage {
                         let ajaxUrl = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&is_facets=1&catalog_id=${this.gCatalogId}${filterString}&pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&sortField=${this.sortField}&sortOrder=${this.sortOrder}`;
                         ajaxUrl = encodeURI(ajaxUrl);
                         this.search(ajaxUrl).then(res => {
-                            this._initFacets(res);
+                            //this._initFacets(res);
                             this._initProducts(res);
                         });
                     }
@@ -691,4 +739,28 @@ export default class Category extends CatalogPage {
         }
         return tier_price;
     }
+
+    //for bundleb2b
+    getProductSummary(productId, _cb) {
+        utils.api.product.getById(productId, {
+            template: 'b2b/product-description'
+        }, (err, response) => {
+            const descHtml = $(response).text();
+
+            let textstr = descHtml.replace(/<[^>]*>|/g, "");
+            if (textstr.length > 100) {
+                textstr = textstr.substring(0, 200);
+                const lastBlank = textstr.lastIndexOf(" ") || 0;
+                if (textstr.lastIndexOf(" ")) {
+                    textstr = textstr.substring(0, lastBlank) + "...";
+                }
+            }
+
+            if (_cb) {
+                _cb(textstr);
+            }
+        });
+
+    }
+
 }

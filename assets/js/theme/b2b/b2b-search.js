@@ -4,6 +4,7 @@ import urlUtils from '../common/url-utils';
 import Url from 'url';
 import $ from "jquery";
 import pricesStyle from './prices-style';
+import utils from '@bigcommerce/stencil-utils';
 
 export default function(keywords) {
 	// non-b2b user
@@ -79,7 +80,7 @@ export default function(keywords) {
 	});
 
 	const _initProducts = function(res) {
-		let ul = $("#b2b_search_result").find(".productGrid");
+		let ul = $("#b2b_search_result").find(".productList");
 		ul.empty();
 
 		let prods = res.payload;
@@ -105,36 +106,66 @@ export default function(keywords) {
 
 			catalog_price = parseFloat(catalog_price).toFixed(2);
 
-			let pro_bg_a = `<a href="${prods[i].product_url}">` +
-				`<div class="card-img-container">` +
-				`<img class="card-image lazyautosizes lazyloaded" data-sizes="auto" src="${prods[i].primary_image.standard_url}" data-src="${prods[i].primary_image.standard_url}" alt="" title="" sizes="263px">` +
-				`</div></a>`;
-			let figcaption = `<figcaption class="card-figcaption"><div class="card-figcaption-body">` +
-				`<a class="button button--small card-figcaption-button quickview" data-product-id="${prods[i].product_id}">Quick view</a>` +
-				`<label class="button button--small card-figcaption-button" for="compare-${prods[i].product_id}">Compare ` +
-				`<input type="checkbox" name="products[]" value="${prods[i].product_id}" id="compare-${prods[i].product_id}" data-compare-id="${prods[i].product_id}">` +
-				`</label>` +
-				`</div></figcaption>`;
+			// product rating
+			const product_rating = parseInt(prods[i].reviews_rating_sum);
+			let pro_rating = `<p class="listItem-rating"  data-rating="${product_rating}" data-test-info-type="productRating">
+                <span class="rating--small">`;
 
-			let card_body = `<h4 class="card-title"><a href="${prods[i].product_url}">${prods[i].product_name}</a></h4>` +
-				`<div class="card-text" data-test-info-type="price">` +
-				`<div class="price-section price-section--withoutTax non-sale-price--withoutTax" style="display: none;">Was:` +
-				`<span data-product-non-sale-price-without-tax="" class="price price--non-sale"></span>` +
-				`</div>` +
+			for (let j = 0; j < 5; j++) {
+				if (product_rating > j) {
+					pro_rating += `<span class="icon icon--ratingFull">
+			            <svg>
+			                <use xlink:href="#icon-star" />
+			            </svg>
+			        </span>`;
+				} else {
+					pro_rating += `<span class="icon icon--ratingEmpty">
+			            <svg>
+			                <use xlink:href="#icon-star" />
+			            </svg>
+			        </span>`;
+				}
+			}
+			pro_rating += `</span></p>`;
+
+
+			let pro_bg_a = `<img class="listItem-image lazyautosizes lazyloaded" data-sizes="auto" src="${prods[i].primary_image.standard_url}" data-src="${prods[i].primary_image.standard_url}" alt="" title="" sizes="263px">`;
+			let figcaption = `<div class="listItem-figureBody">` +
+				`<a class="button button--small listItem-button quickview" data-product-id="${prods[i].product_id}">Quick view</a>` +
+				`</div>`;
+
+			let card_action = ``;
+			if (gRoleId == "0") {
+				card_action = `<a href="${prods[i].product_url}" class="button button--primary">View Detail</a>`;
+			} else {
+				card_action = `<a href="/cart.php?action=add&amp;product_id=${prods[i].product_id}" data-event-type="product-click" class="button button--primary">Add to Cart</a>`;
+			}
+
+			let card_body = `<div class="listItem-details">${pro_rating}<h4 class="listItem-title"><a href="${prods[i].product_url}">${prods[i].product_name}</a></h4><p data-product-summary-${product_id}></p></div>` +
+				`<div class="listItem-actions">` +
+				`<div class="listItem-price">` +
 				`<div class="price-section price-section--withoutTax">` +
 				`<span class="price-label"></span>` +
 				`<span class="price-now-label" style="display: none;">Now:</span>` +
 				`${rrp_price}<span data-product-price-without-tax="" class="price price--withoutTax">$${pricesStyle(catalog_price,2)}</span>` +
-				`</div></div>`;
+				`</div>` +
+				`</div>` +
+				`${card_action}` +
+				`</div>`;
 
-			ul.append(`<li class="product"><article class="card">` +
-				`<figure class="card-figure">${pro_bg_a}${figcaption}</figure>` +
-				`<div class="card-body">${card_body}</div>` +
-				`</article></li>`)
+			ul.append(`<li class="product"><article class="listItem">` +
+				`<figure class="listItem-figure">${pro_bg_a}${figcaption}</figure>` +
+				`<div class="listItem-body"><div class="listItem-content">${card_body}</div></div>` +
+				`</article></li>`);
+
+			getProductSummary(product_id, function(summary) {
+				console.log(summary);
+				$(`[data-product-summary-${product_id}]`).text(summary);
+			});
 		}
 	}
 
-	const changeSort = function () {
+	const changeSort = function() {
 		let result = $("#b2b_search_result");
 		let sort = `<fieldset class="form-fieldset actionBar-section" style="width: 210px; float: none;">
 						<div class="form-field">
@@ -142,17 +173,17 @@ export default function(keywords) {
 							<select class="form-select form-select--small" name="sort" id="sort">
 								<option value="updated_date.keyword" data-sort="asc" selected="">Featured Items</option>
 								<option value="updated_date.keyword" data-sort="desc">Newest Items</option>` +
-								// <option value="bestselling" >Best Selling</option>
-								`<option value="product_name.keyword" data-sort="asc">A to Z</option>
+			// <option value="bestselling" >Best Selling</option>
+			`<option value="product_name.keyword" data-sort="asc">A to Z</option>
 								<option value="product_name.keyword" data-sort="desc">Z to A</option>` +
-								// <option value="avgcustomerreview" >By Review</option>
-								`<option value="base_price" data-sort="asc">Price: Ascending</option>
+			// <option value="avgcustomerreview" >By Review</option>
+			`<option value="base_price" data-sort="asc">Price: Ascending</option>
 								<option value="base_price" data-sort="desc">Price: Descending</option>
 							</select>
 						</div>
 					</fieldset>`;
 		result.prepend(sort);
-		$('#sort').on('change', function () {
+		$('#sort').on('change', function() {
 			sortField = $('#sort').val();
 			sortOrder = $("#sort").find("option:selected").data("sort");
 			ajaxUrl = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&keywords=${keywords}&is_facets=1&catalog_id=${gCatalogId}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`;
@@ -467,6 +498,29 @@ export default function(keywords) {
 			}
 		}
 		return tier_price;
+	}
+
+	//for bundleb2b
+	const getProductSummary = function(productId, _cb) {
+		utils.api.product.getById(productId, {
+			template: 'b2b/product-description'
+		}, (err, response) => {
+			const descHtml = $(response).text();
+
+			let textstr = descHtml.replace(/<[^>]*>|/g, "");
+			if (textstr.length > 100) {
+				textstr = textstr.substring(0, 200);
+				const lastBlank = textstr.lastIndexOf(" ") || 0;
+				if (textstr.lastIndexOf(" ")) {
+					textstr = textstr.substring(0, lastBlank) + "...";
+				}
+			}
+
+			if (_cb) {
+				_cb(textstr);
+			}
+		});
+
 	}
 
 

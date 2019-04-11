@@ -388,7 +388,7 @@ export default function() {
         const catalogProductCount = $(this).find("[catalog-product]").length;
         if (catalogProductCount == 0) {
           $("[catalog-listing-wrap]").show();
-          $(this).parents(".page").html("We can't find products matching the selection.");
+          //$(this).parents(".page").html("We can't find products matching the selection.");
         } else {
           $("[catalog-listing-wrap]").show();
           const $catalogProductCounter = $("[data-catalog-product-counter]");

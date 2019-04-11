@@ -8,6 +8,7 @@ import modalFactory, {
 import _ from 'lodash';
 import Wishlist from '../wishlist';
 //for bundleb2b
+import swal from '../global/sweet-alert';
 import config from '../b2b/config';
 import pricesStyle from '../b2b/prices-style';
 
@@ -74,6 +75,11 @@ export default class ProductDetails {
             this.gRoleId = bundleb2b_user.role_id;
             this.bypass_company_id = bundleb2b_user.company_id;
 
+            if (this.gRoleId == "0") {
+                $("#bl_form-action-addToCart").hide();
+            }
+
+
             this.getLists();
 
             $form.on('submit', event => {
@@ -122,7 +128,7 @@ export default class ProductDetails {
 
         //for bundleb2b
         this.$scope.on('click', '[add-to-list]', (event) => {
-            debugger
+            //debugger
 
             const $target = $(event.target);
             const listData = JSON.parse($target.attr("data-list-data"));
@@ -175,7 +181,7 @@ export default class ProductDetails {
                     variant_id = variants[i].variant_id;
                 }
             }
-            debugger
+            //debugger
             if (!variant_id) {
                 alert("This product or option has no variant id");
                 return;
@@ -631,7 +637,7 @@ export default class ProductDetails {
                 };
                 utils.api.cart.getContent(options, (err, response) => {
                     //console.log(response.content);
-                    debugger
+                    //debugger
                     const divEle = document.createElement("div");
                     $(divEle).html(response.content);
                     const $items = $(divEle).find(".item");
@@ -1775,6 +1781,7 @@ export default class ProductDetails {
 
     //for bundleb2b
     updateTierPriceRange(sku, base_price) {
+        //debugger
         const current_sku = sku;
         const product_id = $("input[name='product_id']", this.$scope).val();
         let hasTierPrice = false;

@@ -27,6 +27,7 @@
     @include breakpoint("small") {
         @include grid-row($behavior: "nest");
         display: table;
+        width: 100%;
     }
 }
 
@@ -129,6 +130,7 @@
 
     @include breakpoint("large") {
         display: table;
+        width: 100%;
     }
 }
 

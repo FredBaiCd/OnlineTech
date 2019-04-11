@@ -72,6 +72,7 @@ export default class Cart extends PageManager {
     }
 
     cartUpdateQtyTextChange($target, preVal = null) {
+        debugger
         const itemId = $target.data('cartItemid');
         const $el = $(`#qty-${itemId}`);
         const maxQty = parseInt($el.data('quantityMax'), 10);
@@ -79,7 +80,8 @@ export default class Cart extends PageManager {
         const oldQty = preVal !== null ? preVal : minQty;
         const minError = $el.data('quantityMinError');
         const maxError = $el.data('quantityMaxError');
-        const newQty = parseInt(Number($el.attr('value')), 10);
+        //const newQty = parseInt(Number($el.attr('value')), 10);
+        const newQty = parseInt(Number($el.val()), 10);
         let invalidEntry;
         // Does not quality for min/max quantity
         if (!newQty) {
@@ -111,7 +113,15 @@ export default class Cart extends PageManager {
                 // if the quantity is changed "1" from "0", we have to remove the row.
                 const remove = (newQty === 0);
 
-                this.refreshContent(remove);
+                //this.refreshContent(remove);
+
+                //for bundleb2b
+                if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") != "none") {
+                    this.updateCatalogPrice(itemId);
+                } else {
+                    this.refreshContent(remove);
+                }
+
             } else {
                 $el.val(oldQty);
                 swal({
@@ -243,6 +253,7 @@ export default class Cart extends PageManager {
         }).change(event => {
             const $target = $(event.currentTarget);
             event.preventDefault();
+            console.log($target.val());
 
             // update cart quantity
             cartUpdateQtyTextChange($target, preVal);
