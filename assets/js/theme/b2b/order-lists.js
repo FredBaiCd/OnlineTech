@@ -538,7 +538,6 @@ export default function(context) {
 				tr += `
 	                            <a href="javascript:void(0);" class="reorder-button button button--primary button--small" disabled>Reorder</a>
 	                            <a href="javascript:void(0);" class="shoppinglist-button button button--small" disabled>Add to New Shopping List</a> 
-	                            <a href="javascript:void(0);" class="invoice-button button button--primary button--small" disabled>Receive Paypal Invoice</a>
 	                        </td>
 	                    </tr>`;
 
@@ -546,7 +545,6 @@ export default function(context) {
 				tr += `
 	                            <a href="javascript:void(0);" class="reorder-button button button--primary button--small" disabled>Reorder</a>
 	                            <a href="javascript:void(0);" class="shoppinglist-button button button--small" disabled>Add to New Shopping List</a> 
-	                            <a href="javascript:void(0);" class="invoice-button button button--primary button--small" disabled>Receive Paypal Invoice</a>
 	                        </td>
 	                    </tr>`;
 			}
