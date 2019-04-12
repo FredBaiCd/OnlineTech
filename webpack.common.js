@@ -1,8 +1,8 @@
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin,
-      CleanPlugin = require('clean-webpack-plugin'),
-      LodashPlugin = require('lodash-webpack-plugin'),
-      path = require('path'),
-      webpack = require('webpack');
+    CleanPlugin = require('clean-webpack-plugin'),
+    LodashPlugin = require('lodash-webpack-plugin'),
+    path = require('path'),
+    webpack = require('webpack');
 
 // Common configuration, with extensions in webpack.dev.js and webpack.prod.js.
 module.exports = {
@@ -12,29 +12,27 @@ module.exports = {
         main: './assets/js/app.js',
     },
     module: {
-        rules: [
-            {
-                test: /\.js$/,
-                include: /(assets\/js|assets\\js|stencil-utils)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        plugins: [
-                            '@babel/plugin-syntax-dynamic-import', // add support for dynamic imports (used in app.js)
-                            'lodash', // Tree-shake lodash
-                        ],
-                        presets: [
-                            ['@babel/preset-env', {
-                                loose: true, // Enable "loose" transformations for any plugins in this preset that allow them
-                                modules: false, // Don't transform modules; needed for tree-shaking
-                                useBuiltIns: 'usage', // Tree-shake babel-polyfill
-                                targets: '> 1%, last 2 versions, Firefox ESR',
-                            }],
-                        ],
-                    },
+        rules: [{
+            test: /\.js$/,
+            include: /(assets\/js|assets\\js|stencil-utils)/,
+            use: {
+                loader: 'babel-loader',
+                options: {
+                    plugins: [
+                        '@babel/plugin-syntax-dynamic-import', // add support for dynamic imports (used in app.js)
+                        'lodash', // Tree-shake lodash
+                    ],
+                    presets: [
+                        ['@babel/preset-env', {
+                            loose: true, // Enable "loose" transformations for any plugins in this preset that allow them
+                            modules: false, // Don't transform modules; needed for tree-shaking
+                            useBuiltIns: 'usage', // Tree-shake babel-polyfill
+                            targets: '> 1%, last 2 versions, Firefox ESR',
+                        }],
+                    ],
                 },
             },
-        ],
+        }, ],
     },
     output: {
         chunkFilename: 'theme-bundle.chunk.[name].js',
@@ -47,10 +45,10 @@ module.exports = {
         maxEntrypointSize: 1024 * 300,
     },
     plugins: [
-        new CleanPlugin(['assets/dist'], {
+        /*new CleanPlugin(['assets/dist'], {
             verbose: false,
             watch: false,
-        }),
+        }),*/
         new LodashPlugin, // Complements babel-plugin-lodash by shrinking its cherry-picked builds further.
         new webpack.ProvidePlugin({ // Provide jquery automatically without explicit import
             $: 'jquery',

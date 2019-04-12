@@ -197,6 +197,7 @@ export default function() {
       console.log(bundleb2b_user);
       if (bundleb2b_user.role_id == "0") {
         // role - junior user
+        $('.card .button:contains("Add to Cart")').hide();
         $("#form-action-addToCart").hide();
         $("#user_shoppinglist_nav").show();
         const hurl = document.referrer;

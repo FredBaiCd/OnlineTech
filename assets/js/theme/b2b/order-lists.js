@@ -124,7 +124,7 @@ export default function(context) {
 			return mm + '/' + dd + '/' + y;
 		}
 
-		debugger
+		//debugger
 
 
 		let defaultStartDate = getStoreZoneDate();
@@ -321,7 +321,7 @@ export default function(context) {
 						$tr.find(".actions-field .reorder-button").removeAttr("disabled").attr("reorder-items", "true");
 					}
 					$tr.find(".actions-field .shoppinglist-button").removeAttr("disabled").attr("add-to-shopping-list", "true");
-					if(order_status.toLowerCase() == 'sent') {
+					if (order_status.toLowerCase() == 'sent') {
 						$tr.find(".actions-field .invoice-button").removeAttr("disabled").attr("receive-invoice", "true");
 					}
 				}
@@ -381,7 +381,7 @@ export default function(context) {
 										$tr.find(".actions-field .reorder-button").removeAttr("disabled").attr("reorder-items", "true");
 									}
 									$tr.find(".actions-field .shoppinglist-button").removeAttr("disabled").attr("add-to-shopping-list", "true");
-									if(order_status.toLowerCase() == 'sent') {
+									if (order_status.toLowerCase() == 'sent') {
 										$tr.find(".actions-field .invoice-button").removeAttr("disabled").attr("receive-invoice", "true");
 									}
 								} else {
@@ -902,8 +902,7 @@ export default function(context) {
 		const $tr = $target.parents("tr");
 		const orderId = $tr.attr("data-order-id");
 
-		if (gOrderProducts && gOrderProducts[orderId] && gOrderProducts[orderId].length > 0) {
-		} else {
+		if (gOrderProducts && gOrderProducts[orderId] && gOrderProducts[orderId].length > 0) {} else {
 			return swal({
 				type: "error",
 				text: "Some products in the order are no longer available."
@@ -939,7 +938,7 @@ export default function(context) {
 	});
 
 	$("body").on("click", '[reorder-items]', (event) => {
-		debugger
+		//debugger
 
 		event.preventDefault();
 		const $target = $(event.target);
@@ -1239,6 +1238,7 @@ export default function(context) {
 
 		utils.api.cart.itemRemove(cartitem.id, (err, response) => {
 			if (err) {
+				$overlay.hide();
 				return swal({
 					text: "There are errors when replacing cart irems, please try again.",
 					type: 'error',
