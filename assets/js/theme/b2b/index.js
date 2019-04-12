@@ -195,9 +195,11 @@ export default function() {
     const handleRoleId = function() {
       const bundleb2b_user = JSON.parse(sessionStorage.getItem("bundleb2b_user"));
       console.log(bundleb2b_user);
+      $('.card .button:contains("Add to Cart")').hide();
+
       if (bundleb2b_user.role_id == "0") {
         // role - junior user
-        $('.card .button:contains("Add to Cart")').hide();
+        //$('.card .button:contains("Add to Cart")').hide();
         $("#form-action-addToCart").hide();
         $("#user_shoppinglist_nav").show();
         const hurl = document.referrer;

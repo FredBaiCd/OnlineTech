@@ -15,5 +15,10 @@
         height: 100%;
         transition: height .1s;
         background-color: stencilColor("pace-progress-backgroundColor");
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
     }
 }

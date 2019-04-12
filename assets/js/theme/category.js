@@ -395,7 +395,7 @@ export default class Category extends CatalogPage {
             console.log("this is catalog_price " + catalog_price);
 
             // product rating
-            const product_rating = parseInt(prods[i].reviews_rating_sum);
+            const product_rating = prods[i].reviews_count == "0" ? 0 : Math.round(parseInt(prods[i].reviews_rating_sum) / parseInt(prods[i].reviews_count));
             let pro_rating = `<p class="listItem-rating" data-rating="${product_rating}" data-test-info-type="productRating">
                 <span class="rating--small">`;
 
@@ -423,11 +423,12 @@ export default class Category extends CatalogPage {
                 `</div>`;
 
             let card_action = ``;
-            if (this.gRoleId == "0") {
+            card_action = `<a href="${prods[i].product_url}" class="button button--primary">View Detail</a>`;
+            /*if (this.gRoleId == "0") {
                 card_action = `<a href="${prods[i].product_url}" class="button button--primary">View Detail</a>`;
             } else {
                 card_action = `<a href="/cart.php?action=add&amp;product_id=${prods[i].product_id}" data-event-type="product-click" class="button button--primary">Add to Cart</a>`;
-            }
+            }*/
             let card_body = `<div class="listItem-details">${pro_rating}<h4 class="listItem-title"><a href="${prods[i].product_url}">${prods[i].product_name}</a></h4><p data-product-summary-${product_id}></p></div>` +
                 `<div class="listItem-actions">` +
                 `<div class="listItem-price">` +
