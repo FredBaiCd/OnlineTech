@@ -42,6 +42,8 @@ export default function(customer) {
 	const $accountPhone = $accountForm.find('input#account_phone').parents('.form-field');
 	const $accountCompany = $accountForm.find('input#account_companyname').parents(".form-field");
 	const $accountPassword = $accountForm.find('[data-field-type="Password"]').parents(".form-field");
+	const $accountOtherFields = $accountForm.find('[data-field-type="CurrentPassword"]').parents(".form-field").nextAll();
+
 
 	if ($accountPhone.length > 0) {
 		$accountPhone.addClass("form-field--right");
@@ -59,12 +61,16 @@ export default function(customer) {
                 </label>
                 <input type="text" class="form-input" value="${gCompanyName}" disabled>
             </div>
-            <div class="form-field form-field--input form-field--inputText">
+            <div class="form-field form-field--input form-field--inputText" id="b2b-account-role">
                 <label class="form-label">
                     Role
                 </label>
                 <input type="text" class="form-input" value="${gRoleDefine[gRoleId]}" disabled>
             </div>`).insertAfter($accountEmail);
+
+		if ($accountOtherFields.length > 0) {
+			$accountOtherFields.insertAfter($("#b2b-account-role"));
+		}
 	}
 
 	const getCatalogProducts = function(catalog_id, _callback) {
