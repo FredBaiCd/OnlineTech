@@ -187,16 +187,17 @@
         }
     });
 
-    if(sessionStorage.getItem("company_payments")) {
-        const company_payments = JSON.parse(sessionStorage.getItem("company_payments"));
-        //console.log(company_payments);
-        var interval = setInterval(function(){
-            if($(".checkout-step--payment .checkout-form .form-checklist .form-checklist-item").length > 0) {
-                clearInterval(interval);
-                if (sessionStorage.getItem("bundleb2b_user") == "none") {
-                    $($("#radio-instore")[0].parentNode.parentNode.parentNode).hide();
-                    $($("#radio-cheque")[0].parentNode.parentNode.parentNode).hide();
-                }
+    
+    var interval = setInterval(function(){
+        if($(".checkout-step--payment .checkout-form .form-checklist .form-checklist-item").length > 0) {
+            clearInterval(interval);
+
+            let company_payments = [];
+            if(sessionStorage.getItem("company_payments")) {
+                company_payments = JSON.parse(sessionStorage.getItem("company_payments"));
+                //console.log(company_payments);
+            }
+            if(sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") !== "none") {
 
                 //test PO
                 const $checkoutItems = $(".checkout-step--payment .checkout-form .form-checklist .form-checklist-item");
@@ -217,11 +218,21 @@
                 if($(".checkout-step--payment .checkout-form .form-checklist .form-checklist-item").length > 0) {
                     $(".checkout-step--payment .checkout-form .form-checklist .form-checklist-item").eq(0).find('[name="paymentProviderRadio"]').prop("checked", true);
                 }
-
+            } else {
+                if($("#radio-instore").length > 0) {
+                    $("#radio-instore").parents(".form-checklist-item").hide();
+                }
+                if($("#radio-cheque").length > 0) {
+                    $("#radio-cheque").parents(".form-checklist-item").hide();
+                }
             }
-        },100);
 
-    }
+            
+
+        }
+    },100);
+
+    
 
 
 
