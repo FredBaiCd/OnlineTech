@@ -1441,18 +1441,28 @@ export default function(customer) {
 				return false;
 			}
 			let resultTrs = "";
-			const item = response;
+			const results = response;
 
-			const product_id = $(item).attr("data-product-id");
+			let results_ids = [];
+			const $product_items = $(results).find("[data-result-item]") || [];
+			$product_items.each(function() {
+				const product_id = $(this).attr("data-product-id");
+				if (catalog_products[product_id]) {
+					results_ids.push(product_id);
+				}
 
+			});
 
-			if (catalog_products[product_id]) {
+			//console.log(results_ids);
+
+			if (results_ids.length > 0) {
+
 				$("#product_search_results").html(`<span class="loading-span"></span>`);
-
+				const product_id = results_ids[0];
 				utils.api.product.getById(product_id, {
 					template: 'b2b/shopping-list-search-results-item'
 				}, (err, response) => {
-					console.log(response);
+					//console.log(response);
 					resultTrs = response;
 
 					if (resultTrs) {
@@ -1492,16 +1502,11 @@ export default function(customer) {
 					} else {
 						$("#product_search_results").html(`<table class="search-product-table" id="product_search_result_table" product-search-result-table style="margin-bottom:1.5rem;"><tbody><tr><td>No products found.</td></tr></tbody></table>`);
 					}
-
-
-					//return new ProductDetails($("#product_search_results").find('.optionView'));
 				});
 
 			} else {
 				$("#product_search_results").html(`<table class="search-product-table" id="product_search_result_table" product-search-result-table style="margin-bottom:1.5rem;"><tbody><tr><td>No products found.</td></tr></tbody></table>`);
 			}
-
-
 
 		});
 
@@ -1622,12 +1627,19 @@ export default function(customer) {
 					return false;
 				}
 				let resultTrs = "";
-				const item = response;
+				const results = response;
 
-				const product_id = $(item).attr("data-product-id");
+				let results_ids = [];
+				const $product_items = $(results).find("[data-result-item]") || [];
+				$product_items.each(function() {
+					const product_id = $(this).attr("data-product-id");
+					if (catalog_products[product_id]) {
+						results_ids.push(product_id);
+					}
+				});
 
-				if (catalog_products[product_id]) {
-					console.log("search result: true");
+				if (results_ids.length > 0) {
+					const product_id = results_ids[0];
 
 					utils.api.product.getById(product_id, {
 						template: 'b2b/shopping-list-search-results-item'
@@ -1682,8 +1694,6 @@ export default function(customer) {
 				} else {
 					$("#skus_search_results").find("[product-search-result-table] tbody").append(`<tr><td colspan="5">No products found for "${searchQuery}".</td></tr>`);
 				}
-
-
 
 			});
 
