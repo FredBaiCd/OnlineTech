@@ -29,15 +29,6 @@ export default function () {
     };*/
     /*const stencilDropDown = new StencilDropDown(stencilDropDownExtendables);
     stencilDropDown.bind($('[data-search="quickSearch"]'), $quickSearchDiv, TOP_STYLING);
-
-    //for b2b
-    if (sessionStorage.getItem("bundleb2b_user") != "none") {
-        const bundleb2b_user = JSON.parse(sessionStorage.getItem("bundleb2b_user"));
-        if (bundleb2b_user.role_id == "0" || bundleb2b_user.role_id == "1" || bundleb2b_user.role_id == "2" || bundleb2b_user.role_id == "10") {
-            $("#b2b_search_form").attr('action', '/b2b-search');
-        }
-    }
-
     stencilDropDownExtendables.onBodyClick = (e, $container) => {
         // If the target element has this data tag or one of it's parents, do not close the search results
         // We have to specify `.modal-background` because of limitations around Foundation Reveal not allowing
@@ -46,6 +37,14 @@ export default function () {
             stencilDropDown.hide($container);
         }
     };*/
+
+    //for b2b
+    if (sessionStorage.getItem("bundleb2b_user") != null && sessionStorage.getItem("bundleb2b_user") != "") {
+        const bundleb2b_user = JSON.parse(sessionStorage.getItem("bundleb2b_user"));
+        if (bundleb2b_user.role_id == "0" || bundleb2b_user.role_id == "1" || bundleb2b_user.role_id == "2" || bundleb2b_user.role_id == "10") {
+            $("#b2b_search_form").attr('action', '/b2b-search');
+        }
+    }
 
     // stagger searching for 200ms after last input
     const doSearch = _.debounce((searchQuery) => {
