@@ -19,6 +19,17 @@ import b2b from './b2b';
 
 export default class Global extends PageManager {
     onReady() {
+
+        // for bundleb2b
+        if (!this.context.customer) {
+            sessionStorage.setItem("bundleb2b_user", "none");
+            sessionStorage.removeItem("catalog_id");
+            sessionStorage.removeItem("catalog_products");
+            sessionStorage.removeItem("company_payments");
+            sessionStorage.removeItem("bundleb2b_sale");
+        }
+
+
         // Only load visible elements until the onload event fires,
         // after which preload nearby elements.
         window.lazySizesConfig = window.lazySizesConfig || {};
@@ -37,6 +48,7 @@ export default class Global extends PageManager {
         loadingProgressBar();
         svgInjector();
 
+        // for bundleb2b
         b2b.call(this);
     }
 }
