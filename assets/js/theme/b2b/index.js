@@ -108,11 +108,7 @@ export default function() {
               "company_name": company_name
             };
             sessionStorage.setItem("bundleb2b_user", JSON.stringify(user_info));
-            if(sessionStorage.getItem("b2b_flag") == "false") {
-              sessionStorage.setItem("b2b_flag", "true");
-              location.reload();
-            }
-
+            $("#b2b_search_form").attr('action', '/b2b-search');
             if (catalog_id) {
               sessionStorage.setItem("catalog_id", catalog_id.toString());
               console.log(catalog_id.toString());
@@ -164,10 +160,7 @@ export default function() {
                       "role_id": 10
                     };
                     sessionStorage.setItem("bundleb2b_user", JSON.stringify(user_info));
-                    if(sessionStorage.getItem("b2b_flag") == "false") {
-                      sessionStorage.setItem("b2b_flag", "true");
-                      location.reload();
-                    }
+                    $("#b2b_search_form").attr('action', '/b2b-search');
 
                     if (_callback1) {
                       _callback1();
@@ -435,32 +428,7 @@ export default function() {
           "role_id": 10
         };
         sessionStorage.setItem("bundleb2b_user", JSON.stringify(user_info));
-        if(sessionStorage.getItem("b2b_flag") == "false") {
-          sessionStorage.setItem("b2b_flag", "true");
-          location.reload();
-        }
-
-        $('#quickSearch').on('submit', event => {
-          const searchQuery = $(event.currentTarget).find('input').val();
-          if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") != "none") {
-            // for b2b user
-            $('.snize-ac-results').css("display", "none");
-            $('.snize-ac-results').remove();
-            if (searchQuery.length == 0) {
-              $quickSearchResults.html("");
-              return event.preventDefault();
-            }
-            doSearch_b2b(searchQuery);
-            return event.preventDefault();
-          } else {
-            // for non b2b user
-            // server will only perform search with at least 3 characters
-            if (searchQuery.length === 0) {
-              return event.preventDefault();
-            }
-            return true;
-          }
-        });
+        $("#b2b_search_form").attr('action', '/b2b-search');
 
         window.location.href = "/salerep/";
       });

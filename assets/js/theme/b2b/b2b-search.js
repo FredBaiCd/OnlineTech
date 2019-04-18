@@ -31,7 +31,7 @@ export default function(keywords) {
 
 
 	let selectedFacets = {};
-	let ajaxUrl = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&keywords=${keywords}&is_facets=1&catalog_id=${gCatalogId}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}&is_distinct=product_id`;
+	let ajaxUrl = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&keywords=${keywords}&is_facets=1&catalog_id=${gCatalogId}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`;
 
 	const search = function(url, _callback) {
 		let promise = new Promise((resolve, reject) => {
@@ -69,7 +69,7 @@ export default function(keywords) {
 			onPageChange: (num, type) => {
 				if (pageNumber == num) return;
 				pageNumber = num;
-				ajaxUrl = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&keywords=${keywords}&is_facets=1&catalog_id=${gCatalogId}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}&is_distinct=product_id`;
+				ajaxUrl = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&keywords=${keywords}&is_facets=1&catalog_id=${gCatalogId}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`;
 				search(ajaxUrl).then(res => {
 					_initFacets(res);
 					_initProducts(res);
@@ -188,7 +188,7 @@ export default function(keywords) {
 		$('#sort').on('change', function() {
 			sortField = $('#sort').val();
 			sortOrder = $("#sort").find("option:selected").data("sort");
-			ajaxUrl = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&keywords=${keywords}&is_facets=1&catalog_id=${gCatalogId}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}&is_distinct=product_id`;
+			ajaxUrl = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&keywords=${keywords}&is_facets=1&catalog_id=${gCatalogId}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`;
 			search(ajaxUrl).then(res => {
 				_initFacets(res);
 				_initProducts(res);
@@ -367,7 +367,7 @@ export default function(keywords) {
 				filterString = "&filtersBy={" + filterString + "}";
 			}
 
-			let ajaxUrl2 = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&keywords=${keywords}&is_facets=1&catalog_id=${gCatalogId}${filterString}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}&is_distinct=product_id`;
+			let ajaxUrl2 = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&keywords=${keywords}&is_facets=1&catalog_id=${gCatalogId}${filterString}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`;
 			console.log(ajaxUrl2);
 			ajaxUrl2 = encodeURI(ajaxUrl2);
 			console.log(ajaxUrl2);
@@ -390,7 +390,7 @@ export default function(keywords) {
 					onPageChange: (num, type) => {
 						if (pageNumber == num) return;
 						pageNumber = num;
-						ajaxUrl = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&keywords=${keywords}&is_facets=1&catalog_id=${gCatalogId}${filterString}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}&is_distinct=product_id`;
+						ajaxUrl = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&keywords=${keywords}&is_facets=1&catalog_id=${gCatalogId}${filterString}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`;
 						ajaxUrl = encodeURI(ajaxUrl);
 						search(ajaxUrl).then(res => {
 							_initFacets(res);
@@ -441,7 +441,7 @@ export default function(keywords) {
 				filterString = "&filtersBy={" + filterString + "}";
 			}
 
-			let ajaxUrl2 = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&keywords=${keywords}&is_facets=1&catalog_id=${gCatalogId}${filterString}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}&is_distinct=product_id`;
+			let ajaxUrl2 = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&keywords=${keywords}&is_facets=1&catalog_id=${gCatalogId}${filterString}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`;
 			console.log(ajaxUrl2);
 			ajaxUrl2 = encodeURI(ajaxUrl2);
 			console.log(ajaxUrl2);
@@ -464,7 +464,7 @@ export default function(keywords) {
 					onPageChange: (num, type) => {
 						if (pageNumber == num) return;
 						pageNumber = num;
-						ajaxUrl = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&keywords=${keywords}&is_facets=1&catalog_id=${gCatalogId}${filterString}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}&is_distinct=product_id`;
+						ajaxUrl = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&keywords=${keywords}&is_facets=1&catalog_id=${gCatalogId}${filterString}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`;
 						ajaxUrl = encodeURI(ajaxUrl);
 						search(ajaxUrl).then(res => {
 							_initFacets(res);
