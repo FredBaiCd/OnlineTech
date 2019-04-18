@@ -39,11 +39,8 @@ export default function () {
     };*/
 
     //for b2b
-    if (sessionStorage.getItem("bundleb2b_user") != null && sessionStorage.getItem("bundleb2b_user") != "") {
-        const bundleb2b_user = JSON.parse(sessionStorage.getItem("bundleb2b_user"));
-        if (bundleb2b_user.role_id == "0" || bundleb2b_user.role_id == "1" || bundleb2b_user.role_id == "2" || bundleb2b_user.role_id == "10") {
-            $("#b2b_search_form").attr('action', '/b2b-search');
-        }
+    if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") != "none") {
+        $("#b2b_search_form").attr('action', '/b2b-search');
     }
 
     // stagger searching for 200ms after last input
@@ -63,8 +60,8 @@ export default function () {
 
         if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") != "none") {
             // for b2b user
-            //$('.snize-ac-results').css("display", "none");
-            //$('.snize-ac-results').remove();
+            $('.snize-ac-results').css("display", "none");
+            $('.snize-ac-results').remove();
 
             if (searchQuery.length == 0) {
                 $quickSearchResults.html("");
@@ -116,12 +113,24 @@ export default function () {
     // Catch the submission of the quick-search
     $quickSearchDiv.on('submit', event => {
         const searchQuery = $(event.currentTarget).find('input').val();
-
-        if (searchQuery.length === 0) {
+        if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") != "none") {
+            // for b2b user
+            $('.snize-ac-results').css("display", "none");
+            $('.snize-ac-results').remove();
+            if (searchQuery.length == 0) {
+                $quickSearchResults.html("");
+                return event.preventDefault();
+            }
+            doSearch_b2b(searchQuery);
             return event.preventDefault();
+        } else {
+            // for non b2b user
+            // server will only perform search with at least 3 characters
+            if (searchQuery.length === 0) {
+                return event.preventDefault();
+            }
+            return true;
         }
-
-        return true;
     });
 
     // for bundleb2b

@@ -21,6 +21,10 @@ export default class Global extends PageManager {
     onReady() {
 
         // for bundleb2b
+        sessionStorage.setItem("b2b_flag", "false");
+        if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") != "none") {
+            sessionStorage.setItem("b2b_flag", "true");
+        }
         if (!this.context.customer) {
             sessionStorage.setItem("bundleb2b_user", "none");
             sessionStorage.removeItem("catalog_id");
