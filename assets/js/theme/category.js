@@ -87,8 +87,11 @@ export default class Category extends CatalogPage {
                 </scetion>
             `);
 
-
+            console.log(this.context.subcategories)
             const filterString = `&filtersBy={"category_id":"${this.gCategoryId}"}`;
+            if(this.context.subcategories && this.context.subcategories.length > 0) {
+
+            }
             let ajaxUrl = `${config.apiRootUrl}/search?store_hash=${config.storeHash}&is_facets=1&catalog_id=${this.gCatalogId}${filterString}&pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&sortField=${this.sortField}&sortOrder=${this.sortOrder}`;
             ajaxUrl = encodeURI(ajaxUrl);
 
