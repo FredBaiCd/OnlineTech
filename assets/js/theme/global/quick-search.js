@@ -133,6 +133,15 @@ export default function() {
         }
     });
 
+    $(".bl_search_submit").on("click", event => {
+        if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") != "none") {
+            event.preventDefault();
+            debugger
+            $(event.currentTarget).parents("form").submit();
+        }
+
+    });
+
     // for bundleb2b
     const handleCatalogProducts = function() {
 
