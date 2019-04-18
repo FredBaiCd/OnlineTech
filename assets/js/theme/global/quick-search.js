@@ -115,8 +115,6 @@ export default function () {
         const searchQuery = $(event.currentTarget).find('input').val();
         if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2b_user") != "none") {
             // for b2b user
-            $('.snize-ac-results').css("display", "none");
-            $('.snize-ac-results').remove();
             if (searchQuery.length == 0) {
                 $quickSearchResults.html("");
                 return event.preventDefault();

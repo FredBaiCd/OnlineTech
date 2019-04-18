@@ -108,7 +108,11 @@ export default function() {
               "company_name": company_name
             };
             sessionStorage.setItem("bundleb2b_user", JSON.stringify(user_info));
-            $("#b2b_search_form").attr('action', '/b2b-search');
+            if(sessionStorage.getItem("b2b_flag") == "false") {
+              sessionStorage.setItem("b2b_flag", "true");
+              location.reload();
+            }
+
             if (catalog_id) {
               sessionStorage.setItem("catalog_id", catalog_id.toString());
               console.log(catalog_id.toString());
@@ -160,7 +164,10 @@ export default function() {
                       "role_id": 10
                     };
                     sessionStorage.setItem("bundleb2b_user", JSON.stringify(user_info));
-                    $("#b2b_search_form").attr('action', '/b2b-search');
+                    if(sessionStorage.getItem("b2b_flag") == "false") {
+                      sessionStorage.setItem("b2b_flag", "true");
+                      location.reload();
+                    }
 
                     if (_callback1) {
                       _callback1();
@@ -428,8 +435,10 @@ export default function() {
           "role_id": 10
         };
         sessionStorage.setItem("bundleb2b_user", JSON.stringify(user_info));
-        $("#b2b_search_form").attr('action', '/b2b-search');
-
+        if(sessionStorage.getItem("b2b_flag") == "false") {
+          sessionStorage.setItem("b2b_flag", "true");
+          location.reload();
+        }
         window.location.href = "/salerep/";
       });
     }
