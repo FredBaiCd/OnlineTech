@@ -5,7 +5,7 @@ import StencilDropDown from './stencil-dropdown';
 import config from '../b2b/config';
 import pricesStyle from '../b2b/prices-style';
 
-export default function () {
+export default function() {
     const TOP_STYLING = 'top: 49px;';
     const $quickSearchResults = $('.quickSearchResults');
     const $quickSearchDiv = $('#quickSearch');
@@ -45,7 +45,9 @@ export default function () {
 
     // stagger searching for 200ms after last input
     const doSearch = _.debounce((searchQuery) => {
-        utils.api.search.search(searchQuery, { template: 'search/quick-results' }, (err, response) => {
+        utils.api.search.search(searchQuery, {
+            template: 'search/quick-results'
+        }, (err, response) => {
             if (err) {
                 return false;
             }
