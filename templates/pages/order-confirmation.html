@@ -46,7 +46,7 @@ if(sessionStorage.getItem("po_number")) {
 
     $.ajax({
         type: "POST",
-        url: 'https://8l6t4dsd6e.execute-api.us-west-2.amazonaws.com/prod/purchaseOrderNumber',
+        url: 'https://v58yqgkmjb.execute-api.us-west-2.amazonaws.com/prod',
         contentType: "application/json",
         data: JSON.stringify(postData),
         success: function(data) {
@@ -68,7 +68,7 @@ if(sessionStorage.getItem("po_number")) {
 
     $.ajax({
         type: "POST",
-        url: 'https://8l6t4dsd6e.execute-api.us-west-2.amazonaws.com/prod/invoiceCreate',
+        url: 'https://v58yqgkmjb.execute-api.us-west-2.amazonaws.com/prod',
         contentType: "application/json",
         data: JSON.stringify(postData),
         success: function(data) {
@@ -92,7 +92,7 @@ if (sessionStorage.getItem("bundleb2b_user") && sessionStorage.getItem("bundleb2
 
         $.ajax({
             type: "POST",
-            url: 'https://8l6t4dsd6e.execute-api.us-west-2.amazonaws.com/prod/saleCreateOrder',
+            url: 'https://v58yqgkmjb.execute-api.us-west-2.amazonaws.com/prod',
             contentType: "application/json",
             data: JSON.stringify(postData),
             success: function(data) {
