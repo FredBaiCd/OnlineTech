@@ -584,7 +584,6 @@ export default function() {
       if (!sessionStorage.getItem("catalog_products")) {
         if (sessionStorage.getItem("catalog_id")) {
           getCatalogProducts(sessionStorage.getItem("catalog_id"), function() {
-            window.location.reload();
           });
         }
       }
