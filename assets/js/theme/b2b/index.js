@@ -149,7 +149,7 @@ export default function() {
             if (company_status == "PENDING" || company_status == "REJECTED") {
               nonB2bLoginedinUser();
               $(".navUser-section--alt").prepend(`<li class="navUser-item">
-                  <a class="navUser-action" href="/trade-professional-application/">Trade Professional Application</a>
+                  <a class="navUser-action" href="/trade-professional-application/">Gov/Edu/Volume Customers</a>
               </li>`);
             } else {
               // data and logic entrance
@@ -183,7 +183,7 @@ export default function() {
                     displayWishlist();
                     nonB2bLoginedinUser();
                     $(".navUser-section--alt").prepend(`<li class="navUser-item">
-                      <a class="navUser-action" href="/trade-professional-application/">Trade Professional Application</a>
+                      <a class="navUser-action" href="/trade-professional-application/">Gov/Edu/Volume Customers</a>
                   </li>`);
                   }
                 },

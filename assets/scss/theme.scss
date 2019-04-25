@@ -215,3 +215,6 @@ background-color: #0077B4;
 /* for bundleb2b */
 @import "b2b-style";
 @import "jquery-ui";
+
+/* Hide unnecessary front end fields ERP and Sales Rep */
+#FormField_25, #FormField_26 {display:none}
