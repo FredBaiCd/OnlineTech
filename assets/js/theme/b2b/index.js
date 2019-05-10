@@ -225,7 +225,7 @@ export default function() {
         $("#user_management_nav").show();
         $("#user_shoppinglist_nav").show();
         $(".navUser-section--alt").prepend(`<li class="navUser-item navUser-item--quickorder">
-            <a class="navUser-action" href="/quick-order-pad/">Quick Order Pad</a>
+            <a class="navUser-action" href="/quick-order-pad/">Quick Order</a>
         </li>`);
         const hurl = document.referrer;
         if (hurl.indexOf("/login.php") != -1) {
@@ -245,7 +245,7 @@ export default function() {
 
             $("#user_shoppinglist_nav").show();
             $(".navUser-section--alt").prepend(`<li class="navUser-item navUser-item--quickorder">
-              <a class="navUser-action" href="/quick-order-pad/">Quick Order Pad</a>
+              <a class="navUser-action" href="/quick-order-pad/">Quick Order</a>
           </li>`);
           }
         }

@@ -218,3 +218,11 @@ background-color: #0077B4;
 
 /* Hide unnecessary front end fields ERP and Sales Rep */
 #FormField_25, #FormField_26 {display:none}
+
+.apple-pay-checkout-button { margin-bottom:10px; padding-bottom:10px;}
+
+.bl-center {justify-content:center;align-items:center;}
+
+/* Search results page modifications */
+.snize-thumbnail {width:100% !important; max-width:200px !important; max-height:150px !important; border:0 !important; padding-top:25px}
+.snize-thumbnail img {max-width:200px !important; max-height:150px !important}

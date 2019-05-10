@@ -37,9 +37,32 @@ blog:
 </div>
 
 
+<div class="row padbottom">
+    <div class="col-sm-12" style="background-color:#fff4a8; padding:25px; color:#222; font-size:1.1em; line-height:1.75;">
+        Welcome to the NEW Supplies Outlet store. We have updated our entire shopping experience to better serve you. We listened to your requests and have built this experience from the ground up to
+        make things easy for you, our loyal customers. Our new site is mobile friendly, and features a much stronger search system to help you find what you are looking for easier and faster across all your devices.
+        <br><br><span style="font-style: italic;  "><span style="font-weight:bold">**NOTE: If you are a NET/Terms/Tax Exempt Customer, please contact Customer Service: </span><a href="tel:8778228659">1-877-822-8659</a> to ensure your account details are set up correctly.</span>
+    </div>
+</div>
 
 
 
+<div class="row padtop padbottom">
+    <div class="col-sm-6 padbottom">
+<div class="homefeaturecontent" align="center">
+        <i class="fas fa-shield-alt fa-2x" style="color:#0077B4"></i>
+        <h3>Lifetime Warranty</h3>
+        Industry Leading 100% lifetime product guarantee.
+    </div>
+    </div>
+    <div class="col-sm-6 padbottom">
+        <div class="homefeaturecontent" align="center">
+        <i class="fas fa-lock fa-2x" style="color:#0077B4"></i>
+        <h3>Safe & Secure</h3>
+        Save money and enjoy Secure SSL safe shopping experience.
+        </div>
+    </div>
+</div>
 
 
     {{#if products.featured}}
@@ -48,17 +71,13 @@ blog:
         </div>
     {{/if}}
 
-    {{#if products.top_sellers}}
-    <div home-catalog-product>
-        {{> components/products/top products=products.top_sellers columns=theme_settings.homepage_top_products_column_count}}
-        </div>
-    {{/if}}
+<div class="row padtop">
+    <div class="col-sm-12" align="center">
+        <h2>Shipping From TN, TX, PA, & NV</h2>
+        <img src="/content/shipping-map-2019.png">
+    </div>
+</div>
 
-    {{#if products.new}}
-    <div home-catalog-product>
-        {{> components/products/new products=products.new columns=theme_settings.homepage_new_products_column_count}}
-        </div>
-    {{/if}}
 
 {{/partial}}
 {{> layout/base}}

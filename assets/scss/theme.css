@@ -1,8 +1,8 @@
 /*
 Error: Undefined operation: "stencilNumber("fontSize-root") times 0".
-        on line 27 of /Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-23+02-3.2.2/node_modules/@bigcommerce/citadel/dist/tools/_toolkit.scss
-        from line 25 of /Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-23+02-3.2.2/assets/scss/settings/global/_global.scss
-        from line 29 of /Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-23+02-3.2.2/assets/scss/theme.scss
+        on line 27 of /Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-25-3.2.2/node_modules/@bigcommerce/citadel/dist/tools/_toolkit.scss
+        from line 25 of /Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-25-3.2.2/assets/scss/settings/global/_global.scss
+        from line 29 of /Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-25-3.2.2/assets/scss/theme.scss
 
 22: //      - This enables the ability to "null" variables in the Stencil settings.
 23: // 4. Import Stencil's component settings overrides.
@@ -17,9 +17,9 @@ Error: Undefined operation: "stencilNumber("fontSize-root") times 0".
 32: 
 
 Backtrace:
-/Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-23+02-3.2.2/node_modules/@bigcommerce/citadel/dist/tools/_toolkit.scss:27
-/Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-23+02-3.2.2/assets/scss/settings/global/_global.scss:25
-/Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-23+02-3.2.2/assets/scss/theme.scss:29
+/Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-25-3.2.2/node_modules/@bigcommerce/citadel/dist/tools/_toolkit.scss:27
+/Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-25-3.2.2/assets/scss/settings/global/_global.scss:25
+/Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-25-3.2.2/assets/scss/theme.scss:29
 /Applications/Adobe Dreamweaver CC 2019/Adobe Dreamweaver 2019.app/Contents/Resources/gems/rubygems/gems/sass-3.5.3/lib/sass/script/tree/operation.rb:88:in `rescue in _perform'
 /Applications/Adobe Dreamweaver CC 2019/Adobe Dreamweaver 2019.app/Contents/Resources/gems/rubygems/gems/sass-3.5.3/lib/sass/script/tree/operation.rb:84:in `_perform'
 /Applications/Adobe Dreamweaver CC 2019/Adobe Dreamweaver 2019.app/Contents/Resources/gems/rubygems/gems/sass-3.5.3/lib/sass/script/tree/node.rb:50:in `perform'
@@ -163,4 +163,4 @@ Backtrace:
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Undefined operation: \"stencilNumber(\"fontSize-root\") times 0\".\A         on line 27 of /Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-23+02-3.2.2/node_modules/@bigcommerce/citadel/dist/tools/_toolkit.scss\A         from line 25 of /Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-23+02-3.2.2/assets/scss/settings/global/_global.scss\A         from line 29 of /Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-23+02-3.2.2/assets/scss/theme.scss\A \A 22: //      - This enables the ability to \"null\" variables in the Stencil settings.\A 23: // 4. Import Stencil's component settings overrides.\A 24: // 5. Import tools which set/reset Citadel's global settings, to be consumed by\A 25: //    the rest of Stencil.\A 26: //\A 27: // -----------------------------------------------------------------------------\A 28: \A 29: @import \"settings/global/global\"; // 1\A 30: \A 31: @import \"../../node_modules/@bigcommerce/citadel/dist/settings/global/global\"; // 2\A 32: "; }
+  content: "Error: Undefined operation: \"stencilNumber(\"fontSize-root\") times 0\".\A         on line 27 of /Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-25-3.2.2/node_modules/@bigcommerce/citadel/dist/tools/_toolkit.scss\A         from line 25 of /Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-25-3.2.2/assets/scss/settings/global/_global.scss\A         from line 29 of /Users/bill/Documents/Working/websites/suppliesoutlet.com - BC/Cornerstone+b2b-04-25-3.2.2/assets/scss/theme.scss\A \A 22: //      - This enables the ability to \"null\" variables in the Stencil settings.\A 23: // 4. Import Stencil's component settings overrides.\A 24: // 5. Import tools which set/reset Citadel's global settings, to be consumed by\A 25: //    the rest of Stencil.\A 26: //\A 27: // -----------------------------------------------------------------------------\A 28: \A 29: @import \"settings/global/global\"; // 1\A 30: \A 31: @import \"../../node_modules/@bigcommerce/citadel/dist/settings/global/global\"; // 2\A 32: "; }

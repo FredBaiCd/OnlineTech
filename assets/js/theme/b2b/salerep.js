@@ -177,7 +177,7 @@ export default function(customer) {
                         //add quick order pad link
                         if (!$(".navUser-item--quickorder").length) {
                             $(".navUser-section--alt").prepend(`<li class="navUser-item navUser-item--quickorder">
-                                <a class="navUser-action" href="/quick-order-pad/">Quick Order Pad</a>
+                                <a class="navUser-action" href="/quick-order-pad/">Quick Order</a>
                             </li>`);
                         }
 
