@@ -187,7 +187,7 @@
         }
     });
 
-    
+
     var interval = setInterval(function(){
         if($(".checkout-step--payment .checkout-form .form-checklist .form-checklist-item").length > 0) {
             clearInterval(interval);
@@ -227,15 +227,20 @@
                 }
             }
 
-            
+
 
         }
     },100);
 
-    
-
-
-
+    let interval2 = setInterval(function () {
+        if($(".checkout-step--payment .checkout-form .form-checklist .form-checklist-item").length > 0) {
+            clearInterval(interval2);
+            if (sessionStorage.getItem("bundleb2b_user") == "none") {
+                $($("#radio-instore")[0].parentNode.parentNode.parentNode).hide();
+                $($("#radio-cheque")[0].parentNode.parentNode.parentNode).hide();
+            }
+        }
+    }, 100);
 </script>
 <!-- for bundleb2b end-->
 
