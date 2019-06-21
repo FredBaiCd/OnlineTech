@@ -5,7 +5,7 @@
     <ul class="productGrid" b2b-products-gallery {{#if settings.data_tag_enabled}} data-list-name="Quick Search Results" {{/if}}>
 
         {{#each product_results.products}}
-        <li class="product" catalog-product-{{id}}>
+        <li class="product" b2b-product-item="{{id}}" catalog-product-{{id}}>
             {{> components/products/card settings=../settings alternate=true show_compare=../show_compare theme_settings=../theme_settings customer=../customer}}
         </li>
         {{/each}}

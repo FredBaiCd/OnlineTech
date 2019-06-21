@@ -11,6 +11,7 @@ import {
 
 export default function(customer) {
 	console.log("account setting page");
+	let sessionData = [];
 
 
 	// for bundleb2b start
@@ -137,9 +138,80 @@ export default function(customer) {
 
 	}
 
+	// set sessionStorage after get all products
+	const setSessionProducts = function(raw_catalog_products) {
+		let catalogProductsArr = [];
+		let catalog_products = {};
+
+		let textCount = 0;
+
+		for (var j = 0; j < raw_catalog_products.length; j++) {
+			const product = raw_catalog_products[j];
+			delete product.updated_date;
+			delete product.company_catalog_id;
+			delete product.created_date;
+			delete product.store_hash;
+
+			catalogProductsArr.push(product.product_id);
+
+			if (catalog_products[product.product_id]) {
+				catalog_products[product.product_id].push(product);
+			} else {
+				textCount++;
+				catalog_products[product.product_id] = [];
+				catalog_products[product.product_id].push(product);
+			}
+		}
+
+		console.log(textCount);
+
+		console.log("catalog products", catalog_products.length);
+		sessionStorage.setItem("catalog_products", JSON.stringify(catalog_products));
+	}
+
+
+	// limited
+	const getLimitedCatalogProducts = function(catalog_id, offset_id, page_size, _cb) {
+		let offsetParam = ``;
+		if (offset_id) {
+			offsetParam = `&offsetId=${offset_id}`;
+		}
+		$.ajax({
+			type: "GET",
+			url: `${config.apiRootUrl}/catalogproducts?id=${catalog_id}&is_page=Y&pageSize=${page_size}${offsetParam}`,
+			success: function(data) {
+				//console.log("get catalog products", data);
+				if (data && data.length > 0) {
+					sessionData = sessionData.concat(data);
+
+					if (data.length < page_size) {
+						// get done
+						console.log(sessionData.length);
+						//console.log(sessionData);
+						setSessionProducts(sessionData);
+
+						if (_cb) {
+							_cb();
+						}
+
+					} else {
+						// get
+						const offsetId = data[data.length - 1].id;
+						getLimitedCatalogProducts(catalog_id, offsetId, page_size);
+					}
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log("error", JSON.stringify(jqXHR));
+			}
+		});
+
+	}
+
 	if (sessionStorage.getItem("catalog_id")) {
 		const catalog_id = sessionStorage.getItem("catalog_id");
-		getCatalogProducts(catalog_id);
+		//getCatalogProducts(catalog_id);
+		getLimitedCatalogProducts(catalog_id, null, 1000);
 	}
 
 	// for bundleb2b end

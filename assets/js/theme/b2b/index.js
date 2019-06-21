@@ -14,6 +14,8 @@ import b2bSearch from './b2b-search';
 import config from './config';
 import priceStyle from './prices-style'
 
+let sessionData = [];
+
 export default function() {
   let isSearchPage = location.href.indexOf('b2b-search');
   if (isSearchPage > -1) {
@@ -22,6 +24,9 @@ export default function() {
     b2bSearch(keywords);
   }
   const accountSettingUrl = this.context.urls.account.details;
+  
+  $("body").append(`<div class="b2b-loading-overlay-2"></div>`);
+  const $pageOverlay = $(".b2b-loading-overlay-2");
 
   //hide wishlist and account settings when user belongs to a company
   function hideWishlist() {
@@ -108,7 +113,7 @@ export default function() {
               "company_name": company_name
             };
             sessionStorage.setItem("bundleb2b_user", JSON.stringify(user_info));
-            if(sessionStorage.getItem("b2b_flag") == "false") {
+            if (sessionStorage.getItem("b2b_flag") == "false") {
               sessionStorage.setItem("b2b_flag", "true");
               location.reload();
             }
@@ -128,7 +133,9 @@ export default function() {
               _callback1();
             }
             if (catalog_id) {
-              getCatalogProducts(catalog_id, _callback2);
+              //getCatalogProducts(catalog_id, _callback2);
+              $pageOverlay.show();
+              getLimitedCatalogProducts(catalog_id, null, 1000, _callback2);
             }
 
 
@@ -164,7 +171,7 @@ export default function() {
                       "role_id": 10
                     };
                     sessionStorage.setItem("bundleb2b_user", JSON.stringify(user_info));
-                    if(sessionStorage.getItem("b2b_flag") == "false") {
+                    if (sessionStorage.getItem("b2b_flag") == "false") {
                       sessionStorage.setItem("b2b_flag", "true");
                       location.reload();
                     }
@@ -262,6 +269,79 @@ export default function() {
       $("section.quickSearchResults").addClass("b2b-visible");
     }
 
+    // set sessionStorage after get all products
+    const setSessionProducts = function(raw_catalog_products) {
+      let catalogProductsArr = [];
+      let catalog_products = {};
+
+      let textCount = 0;
+
+      for (var j = 0; j < raw_catalog_products.length; j++) {
+        const product = raw_catalog_products[j];
+        delete product.updated_date;
+        delete product.company_catalog_id;
+        delete product.created_date;
+        delete product.store_hash;
+
+        catalogProductsArr.push(product.product_id);
+
+        if (catalog_products[product.product_id]) {
+          catalog_products[product.product_id].push(product);
+        } else {
+          textCount++;
+          catalog_products[product.product_id] = [];
+          catalog_products[product.product_id].push(product);
+        }
+      }
+
+      console.log(textCount);
+
+      console.log("catalog products", catalog_products.length);
+      sessionStorage.setItem("catalog_products", JSON.stringify(catalog_products));
+    }
+
+
+    // limited
+    const getLimitedCatalogProducts = function(catalog_id, offset_id, page_size, _cb) {
+      let offsetParam = ``;
+      if (offset_id) {
+        offsetParam = `&offsetId=${offset_id}`;
+      }
+      $.ajax({
+        type: "GET",
+        url: `${config.apiRootUrl}/catalogproducts?id=${catalog_id}&is_page=Y&pageSize=${page_size}${offsetParam}`,
+        success: function(data) {
+          //console.log("get catalog products", data);
+          if (data && data.length > 0) {
+            sessionData = sessionData.concat(data);
+
+            if (data.length < page_size) {
+              // get done
+              console.log(sessionData.length);
+              //console.log(sessionData);
+              setSessionProducts(sessionData);
+
+              $pageOverlay.hide();
+
+              if (_cb) {
+                _cb();
+              }
+
+            } else {
+              // get
+              $pageOverlay.show();
+              const offsetId = data[data.length - 1].id;
+              getLimitedCatalogProducts(catalog_id, offsetId, page_size);
+            }
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log("error", JSON.stringify(jqXHR));
+          $pageOverlay.hide();
+        }
+      });
+
+    }
 
     const getCatalogProducts = function(catalog_id, _callback) {
       //get catalog products
@@ -351,9 +431,33 @@ export default function() {
 
     const handleCatalogProducts = function() {
       const catalog_products = JSON.parse(sessionStorage.getItem("catalog_products"));
-      const products = $(".product");
+      const $products = $("[b2b-product-item]");
 
-      for (var product_id in catalog_products) {
+      for (let product of $products) {
+        const $product = $(product);
+        const product_id = $product.attr("b2b-product-item");
+
+        if (catalog_products[product_id]) {
+          $product.attr("catalog-product", "true");
+          let base_price = $product.find(".price.price--withTax").text().replace("$", "").replace(",", "") || $product.find(".price.price--withoutTax").text().replace("$", "").replace(",", "");
+          let tier_price;
+          let catalog_price;
+          const variantArr = catalog_products[product_id] || [];
+          if (variantArr.length == 1) {
+            tier_price = variantArr[0].tier_price || [];
+            catalog_price = getCatalogPrice(base_price, tier_price, 1);
+          }
+          if (catalog_price) {
+            var myPerspace = {};
+            $product.find(".price.price--withoutTax").text("$" + priceStyle(parseFloat(catalog_price).toFixed(2), 2));
+            $product.find(".price.price--withTax").text("$" + priceStyle(parseFloat(catalog_price).toFixed(2), 2));
+          }
+        } else {
+          $product.remove();
+        }
+      }
+
+      /*for (var product_id in catalog_products) {
 
         const productSelector = `[catalog-product-${product_id}]`;
         if ($(`${productSelector}`).length > 0) {
@@ -375,14 +479,15 @@ export default function() {
 
           }
         }
-      }
+      }*/
+
+      // just need to handle Homepage and Quick Search, 
+      // Category page and Search page is using search API
 
       //home catlog products
       const $homeCatalogProducts = $("[home-catalog-product]");
       $homeCatalogProducts.each(function() {
-        if ($(this).find("[catalog-product]").length == 0) {
-
-        } else {
+        if ($(this).find("[catalog-product]").length > 0) {
           $(this).show();
         }
       });
@@ -395,7 +500,7 @@ export default function() {
       });
 
       //product Gallery, for listing page
-      const $productGallery = $("[b2b-products-gallery]");
+      /*const $productGallery = $("[b2b-products-gallery]");
       $productGallery.each(function() {
         const catalogProductCount = $(this).find("[catalog-product]").length;
         if (catalogProductCount == 0) {
@@ -408,7 +513,7 @@ export default function() {
             $catalogProductCounter.text(catalogProductCount);
           }
         }
-      });
+      });*/
 
     };
 
@@ -435,7 +540,7 @@ export default function() {
           "role_id": 10
         };
         sessionStorage.setItem("bundleb2b_user", JSON.stringify(user_info));
-        if(sessionStorage.getItem("b2b_flag") == "false") {
+        if (sessionStorage.getItem("b2b_flag") == "false") {
           sessionStorage.setItem("b2b_flag", "true");
           location.reload();
         }
@@ -583,8 +688,8 @@ export default function() {
        */
       if (!sessionStorage.getItem("catalog_products")) {
         if (sessionStorage.getItem("catalog_id")) {
-          getCatalogProducts(sessionStorage.getItem("catalog_id"), function() {
-          });
+          //getCatalogProducts(sessionStorage.getItem("catalog_id"), function() {});
+          getLimitedCatalogProducts(sessionStorage.getItem("catalog_id"), null, 1000);
         }
       }
 
